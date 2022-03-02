@@ -12,23 +12,22 @@ import TextField from '@mui/material/TextField'
 import { makeStyles } from '@material-ui/core/styles'
 import { LinkContainer } from 'react-router-bootstrap'
 const mobileUrl =
-  'https://meyt.neganoon.ir/admin/Customers/API/_startLoginRegister?token=test'
+  'https://portal-sazmani.com/admin/Customers/API/_startLoginRegister?token=test'
 
 const registerUrl =
-  'https://meyt.neganoon.ir/admin/Customers/API/_register?token=test'
+  'https://portal-sazmani.com/admin/Customers/API/_register?token=test'
 
 const Login = () => {
   const [cookies, setCookie, removeCookie] = useCookies(['user'])
   const {
-    Id,
     RegisterShow,
     RegisterClose,
     registerModal,
-    buyModal,
-    buyModalClose,
+
     loginModal,
     loginModalClose,
     loginModalShow,
+
     userData,
     setUserData,
   } = useProjectContext()
@@ -46,16 +45,65 @@ const Login = () => {
     )
   }
 
+  const [state, setState] = useState('')
+  const [city, setCity] = useState('')
+
+  const getState = async () => {
+    try {
+      const rawResponse = await fetch(
+        'https://portal-sazmani.com/admin/States/API/_all?token=test',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            token: 'test',
+          },
+        }
+      )
+      const content = await rawResponse.json()
+      if (content.isDone) {
+        setState(content.data)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const handleStateChange = (e) => {
+    getCityByState(document.getElementById('state').value)
+  }
+  const getCityByState = async (id) => {
+    try {
+      const rawResponse = await fetch(
+        'https://portal-sazmani.com/admin/Cities/API/_allByState?token=test',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            token: 'test',
+          },
+          body: JSON.stringify({
+            stateId: id,
+          }),
+        }
+      )
+      const content = await rawResponse.json()
+      if (content.isDone) {
+        setCity(content.data)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const [phone, setPhone] = useState('')
   const [code, setCode] = useState('')
   const [newpass1, setnewpass1] = useState('')
   const [name, setName] = useState('')
   const [lastName, setLastName] = useState('')
-  const [Referer, setReferer] = useState('')
-  const [name1, setName1] = useState()
-  const [lastName1, setLastName1] = useState()
   const [password, setPassword] = useState('')
   const [gender, setGender] = useState('')
+  const [company, setCompany] = useState('')
+  const [title, setTitle] = useState('')
 
   const [seconds, setSeconds] = useState(30)
   const [isCodeSent, setIsCodeSent] = useState(false)
@@ -73,6 +121,12 @@ const Login = () => {
   const [setnewpass, setsetnewpass] = useState(false)
   const [btnnewpass, setbtnnewpass] = useState(false)
 
+  const handleCompanyChange = (e) => {
+    setCompany(e.target.value)
+  }
+  const handleTitleChange = (e) => {
+    setTitle(e.target.value)
+  }
   const handlePhoneChange = (e) => {
     setPhone(e.target.value)
   }
@@ -82,7 +136,7 @@ const Login = () => {
   const handleCodeChange = (e) => {
     setCode(e.target.value)
   }
-  const handleNameChange = (e) => {
+  const handleFnameChange = (e) => {
     setName(e.target.value)
   }
   const handleLnameChange = (e) => {
@@ -91,9 +145,7 @@ const Login = () => {
   const handlePasswordChange = (e) => {
     setPassword(e.target.value)
   }
-  const handleLRefererChange = (e) => {
-    setReferer(e.target.value)
-  }
+
   const handleGenderChange = (e) => {
     setGender(e.target.value)
   }
@@ -121,6 +173,7 @@ const Login = () => {
       }, 4000)
     }
   }, [seconds])
+
   const foregtpass = (e) => {
     e.preventDefault()
     setBtnLogin(false)
@@ -134,7 +187,7 @@ const Login = () => {
 
     axios
       .post(
-        'https://meyt.neganoon.ir/admin/Customers/API/_forgetPassword?token=test',
+        'https://portal-sazmani.com/admin/Customers/API/_forgetPassword?token=test',
         {
           mobile: phone,
         },
@@ -165,7 +218,7 @@ const Login = () => {
 
     axios
       .post(
-        'https://meyt.neganoon.ir/admin/Customers/API/_forgetPassword?token=test',
+        'https://portal-sazmani.com/admin/Customers/API/_forgetPassword?token=test',
         {
           mobile: phone,
         },
@@ -209,7 +262,7 @@ const Login = () => {
     } else {
       axios
         .post(
-          'https://meyt.neganoon.ir/admin/Customers/API/_codeValidate?token=test',
+          'https://portal-sazmani.com/admin/Customers/API/_codeValidate?token=test',
           {
             mobile: phone,
             code: code,
@@ -277,7 +330,7 @@ const Login = () => {
     } else {
       axios
         .post(
-          'https://meyt.neganoon.ir/admin/Customers/API/_setPassword?token=test',
+          'https://portal-sazmani.com/admin/Customers/API/_setPassword?token=test',
           {
             mobile: phone,
             password: newpass1,
@@ -294,9 +347,10 @@ const Login = () => {
             getIndividualInfo(e)
             Swal.fire({
               type: 'success',
-              text: ' به نگانون خوش آمدید, رمز جدید با موفقیت ثبت شد',
+              text: ' به کالج اورست خوش آمدید, رمز جدید با موفقیت ثبت شد',
             })
             getIndividualInfo(e)
+            loginModalClose()
           }
 
           setLoading(false)
@@ -330,17 +384,17 @@ const Login = () => {
       )
       .then((response) => {
         if (response.data.isDone) {
-          if (response.data.data['status'] == '1') {
-            setBtn(false)
-            setBtnLogin(true)
-            setIsPass(true)
-            setbtnsetpass(true)
-          } else {
+          if (response.data.data['status'] == '0') {
             handleCountDown()
             setCountdown(true)
             setBtn(false)
             setBtnRegister(true)
             setIsCodeSent(true)
+          } else {
+            setBtn(false)
+            setBtnLogin(true)
+            setIsPass(true)
+            setbtnsetpass(true)
           }
         } else {
           Swal.fire({
@@ -377,7 +431,7 @@ const Login = () => {
     } else {
       axios
         .post(
-          'https://meyt.neganoon.ir/admin/Customers/API/_codeValidate?token=test',
+          'https://portal-sazmani.com/admin/Customers/API/_codeValidate?token=test',
           {
             mobile: phone,
             code: code,
@@ -399,7 +453,7 @@ const Login = () => {
             } else {
               Swal.fire({
                 type: 'error',
-                text: response.data.data['message'],
+                text: response.data.data,
                 confirmbuttonText: 'فهمیدم',
               })
             }
@@ -425,7 +479,19 @@ const Login = () => {
   const Register = (e) => {
     e.preventDefault()
     setLoading(true)
-    if (name === '' || lastName === '' || gender === '' || password === '') {
+    let stateId = document.getElementById('state').value
+    let cityId = document.getElementById('city').value
+
+    if (
+      name === '' ||
+      lastName === '' ||
+      gender === '' ||
+      password === '' ||
+      company === '' ||
+      title === '' ||
+      stateId === '0' ||
+      cityId === '0'
+    ) {
       Swal.fire({
         type: 'error',
         text: 'تمام فیلد ها پر شود',
@@ -439,13 +505,15 @@ const Login = () => {
         .post(
           registerUrl,
           {
-            fname: name,
-            lname: lastName,
+            firstName: name,
+            lastName: lastName,
             mobile: phone,
-            referrer: Referer,
             gender: gender,
             password: password,
-            // code: code,
+            company: company,
+            title: title,
+            stateId: document.getElementById('state').value,
+            cityId: document.getElementById('city').value,
           },
           {
             headers: {
@@ -454,10 +522,11 @@ const Login = () => {
           }
         )
         .then((response) => {
+          console.log(response)
           if (response.data.isDone) {
             Swal.fire({
               type: 'success',
-              text: 'به نگانون خوش آمدید',
+              text: 'به کالج اورست خوش آمدید',
               confirmbuttonText: 'فهمیدم',
             })
             getIndividualInfo(e)
@@ -465,12 +534,6 @@ const Login = () => {
             setLoading(false)
             RegisterClose()
             loginModalClose()
-          } else {
-            Swal.fire({
-              type: 'error',
-              text: 'کد معرف نامعتبر',
-              confirmbuttonText: 'فهمیدم',
-            })
           }
           setLoading(false)
         })
@@ -499,7 +562,7 @@ const Login = () => {
     } else {
       axios
         .post(
-          'https://meyt.neganoon.ir/admin/Customers/API/_login?token=test',
+          'https://portal-sazmani.com/admin/Customers/API/_login?token=test',
           {
             mobile: phone,
             code: code,
@@ -518,7 +581,7 @@ const Login = () => {
             setLoading(false)
             Swal.fire({
               type: 'success',
-              text: 'به نگانون خوش آمدید',
+              text: 'به کالج اورست خوش آمدید',
               confirmbuttonText: 'فهمیدم',
               onAfterClose: () => {
                 loginModalClose()
@@ -547,7 +610,7 @@ const Login = () => {
     e.preventDefault()
     axios
       .post(
-        'https://meyt.neganoon.ir/admin/Customers/API/_getCustomerInfo?token=test',
+        'https://portal-sazmani.com/admin/Customers/API/_getCustomerInfo?token=test',
         {
           mobile: phone,
         },
@@ -575,7 +638,12 @@ const Login = () => {
       const timerID = setInterval(() => handleCountDown(), 1000)
       return () => clearInterval(timerID)
     }
+    getState()
   }, [handleCountDown, isCodeSent, inputcode1])
+
+  useEffect(() => {
+    getState()
+  }, [])
 
   return (
     <>
@@ -924,16 +992,16 @@ const Login = () => {
               <div className='col-lg-6 col-md-5 col-sm-10 col-10'>
                 <label for='name' style={{ direction: 'ltr', width: '35%' }}>
                   {' '}
-                  : نام و نام خانوادگی
+                  : نام
                 </label>
                 <input
-                  onChange={handleNameChange}
+                  onChange={handleFnameChange}
                   value={name}
                   required
                   className='col-9 mt-3 mx-1'
                   id='name'
                   type='text'
-                  placeHolder='نام و نام خانوادگی'
+                  placeHolder='نام   '
                   style={{
                     borderRadius: '0.45rem',
                     border: '1px solid #0000004f',
@@ -945,14 +1013,40 @@ const Login = () => {
                   }}
                 />
               </div>
+
+              <div className='col-lg-6 col-md-5 col-sm-10 col-10'>
+                <label for='name' style={{ direction: 'ltr', width: '35%' }}>
+                  {' '}
+                  : نام خانوادگی
+                </label>
+                <input
+                  onChange={handleLnameChange}
+                  value={lastName}
+                  required
+                  className='col-9 mt-3 mx-1'
+                  id='name'
+                  type='text'
+                  placeHolder='  نام خانوادگی'
+                  style={{
+                    borderRadius: '0.45rem',
+                    border: '1px solid #0000004f',
+                    height: '40px',
+                    width: '55%',
+                    outline: 'none',
+                    background: 'white',
+                    padding: '10px',
+                  }}
+                />
+              </div>
+
               <div className='col-lg-6 col-md-5 col-sm-10 col-10'>
                 <label for='names' style={{ direction: 'rtl', width: '35%' }}>
                   {' '}
                   نام سازمان یا شرکت :
                 </label>
                 <input
-                  onChange={handleLnameChange}
-                  value={lastName}
+                  onChange={handleCompanyChange}
+                  value={company}
                   required
                   className='col-9 mt-3 mx-1'
                   id='names'
@@ -969,6 +1063,7 @@ const Login = () => {
                   }}
                 />
               </div>
+
               <div className='col-lg-6 col-md-5 col-sm-10 col-10'>
                 <label
                   for='nameSemat'
@@ -978,8 +1073,8 @@ const Login = () => {
                   سمت شما :
                 </label>
                 <input
-                  onChange={handleLnameChange}
-                  value={lastName}
+                  onChange={handleTitleChange}
+                  value={title}
                   required
                   className='col-9 mt-3 mx-1'
                   id='nameSemat'
@@ -996,6 +1091,7 @@ const Login = () => {
                   }}
                 />
               </div>
+
               <div className='col-lg-6 col-md-5 col-sm-10 col-10'>
                 <label for='pass' style={{ direction: 'rtl', width: '35%' }}>
                   {' '}
@@ -1020,53 +1116,121 @@ const Login = () => {
                   }}
                 />
               </div>
+
               <div className='col-lg-6 col-md-5 col-sm-10 col-10'>
                 <label for='state' style={{ direction: 'rtl', width: '35%' }}>
-                  {' '}
                   استان :
                 </label>
-                <input
-                  onChange={handleLnameChange}
-                  value={lastName}
-                  required
-                  className='col-9 mt-3 mx-1'
+
+                <select
+                  onChange={handleStateChange}
                   id='state'
+                  required
+                  className='col-lg-8 col-md-12 col-sm-12 col-12 mt-3 mx-1'
                   type='text'
-                  placeHolder=' استان'
+                  placeHolder=''
                   style={{
                     borderRadius: '0.45rem',
                     border: '1px solid #0000004f',
-                    height: '40px',
+                    height: '45px',
                     width: '55%',
                     outline: 'none',
                     background: 'white',
                     padding: '10px',
                   }}
-                />
+                >
+                  <option key='0' value='0' disabled selected>
+                    استان خود را انتخاب کنید
+                  </option>
+                  {state &&
+                    state.map((e) => {
+                      return (
+                        <option key={e.id} value={e.id}>
+                          {e.name}
+                        </option>
+                      )
+                    })}
+                </select>
               </div>
+
               <div className='col-lg-6 col-md-5 col-sm-10 col-10'>
                 <label for='city' style={{ direction: 'rtl', width: '35%' }}>
                   {' '}
                   شهر :
                 </label>
-                <input
-                  onChange={handlePasswordChange}
-                  value={password}
-                  required
-                  className='col-9 mt-3 mx-1'
+                <select
                   id='city'
+                  required
+                  className='col-lg-8 col-md-12 col-sm-12 col-12 mt-3 mx-1'
                   type='text'
-                  placeHolder='شهر'
+                  placeHolder=''
                   style={{
                     borderRadius: '0.45rem',
                     border: '1px solid #0000004f',
-                    height: '40px',
+                    height: '45px',
                     width: '55%',
                     outline: 'none',
                     background: 'white',
                     padding: '10px',
                   }}
-                />
+                >
+                  <option key='0' value='0' disabled selected>
+                    شهر خود را انتخاب کنید
+                  </option>
+                  {city &&
+                    city.map((e) => {
+                      return (
+                        <option key={e.id} value={e.id}>
+                          {e.name}
+                        </option>
+                      )
+                    })}
+                </select>
+              </div>
+
+              <div
+                className='col-12 my-3  text-right'
+                style={{ textAlign: 'right' }}
+              >
+                <label>جنسیت :</label>
+              </div>
+              <div className='row col-3 col-lg-9 col-md-8 col-sm-8  '>
+                <div className='col-6 col-lg-6 col-md-6 col-sm-6 text-right'>
+                  <label
+                    className='fontsize-sm '
+                    style={{ marginLeft: '15px' }}
+                  >
+                    خانم
+                  </label>
+                  <input
+                    onChange={handleGenderChange}
+                    value={gender}
+                    required
+                    type='radio'
+                    name='sex'
+                    className='sex text-start'
+                    value='2'
+                    style={{ textAlign: 'end' }}
+                  />
+                </div>
+                <div className='col-6 col-lg-6 col-md-6 col-sm-6 text-right'>
+                  <label
+                    className='fontsize-sm '
+                    style={{ marginLeft: '15px' }}
+                  >
+                    اقا
+                  </label>
+                  <input
+                    onChange={handleGenderChange}
+                    value={gender}
+                    required
+                    type='radio'
+                    name='sex'
+                    className='sex text-start'
+                    value='1'
+                    style={{ textAlign: 'end' }}
+                  />
+                </div>
               </div>
             </div>
           </Grow>

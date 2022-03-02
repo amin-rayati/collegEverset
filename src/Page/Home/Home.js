@@ -1,4 +1,4 @@
-import { React, useState } from 'react'
+import { React, useState, useEffect } from 'react'
 import MainSlider from '../../component/Slider/MainSlider'
 import DoreSlider from '../../component/Slider/DoreSlider'
 import ServiceSlider from '../../component/Slider/ServiceSlider'
@@ -7,8 +7,94 @@ import logo from '../../assets/Img/logo.jpg'
 import ax4 from '../../assets/Img/ax4.jpg'
 import footer from '../../assets/Img/footer.PNG'
 // import { BsFillTelephoneFill } from 'react-icons/bs'
+import certificate from '../../assets/Img/certificate.jpg'
 
 const Home = () => {
+  const [serivces, setServices] = useState('')
+  const [mojavez, setMojavez] = useState('')
+  const [client, setClient] = useState('')
+  const getServices = async () => {
+    try {
+      const rawResponse = await fetch(
+        'https://portal-sazmani.com/admin/Services/API/_all?token=test',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            token: 'test',
+          },
+
+          body: JSON.stringify({
+            limit: '10',
+            page: '0',
+          }),
+        }
+      )
+      const content = await rawResponse.json()
+      if (content.isDone) {
+        setServices(content.data.data)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const getMojavez = async () => {
+    try {
+      const rawResponse = await fetch(
+        'https://portal-sazmani.com/admin/Certificates/API/_all?token=test',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            token: 'test',
+          },
+
+          body: JSON.stringify({
+            limit: '10',
+            page: '0',
+          }),
+        }
+      )
+      const content = await rawResponse.json()
+      if (content.isDone) {
+        setMojavez(content.data.data)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const getClient = async () => {
+    try {
+      const rawResponse = await fetch(
+        'https://portal-sazmani.com/admin/Clients/API/_all?token=test',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            token: 'test',
+          },
+
+          body: JSON.stringify({
+            limit: '10',
+            page: '0',
+          }),
+        }
+      )
+      const content = await rawResponse.json()
+      if (content.isDone) {
+        setClient(content.data.data)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    getServices()
+    getMojavez()
+    getClient()
+  }, [])
+
   return (
     <>
       <div>
@@ -46,7 +132,9 @@ const Home = () => {
           />
         </div>
       </div>
+
       <MainSlider />
+
       <div className='my-5 py-5 px-1' style={{ backgroundColor: '#eff2f9' }}>
         <h4
           style={{ color: 'black', textAlign: 'center', fontWeight: 'bolder' }}
@@ -62,7 +150,53 @@ const Home = () => {
         >
           خدمات ما
         </h4>
-        <ServiceSlider />
+        {serivces.length > 3 ? (
+          <ServiceSlider serivces={serivces} />
+        ) : (
+          <div className='row'>
+            {serivces &&
+              serivces.map((e) => {
+                return (
+                  <div
+                    className='col-xl-3 col-lg-8 col-md-8 col-sm-10  col-10 my-5 mx-auto'
+                    style={{
+                      backgroundColor: '#fff',
+                      borderRadius: '15px',
+                      padding: '20px 0px',
+                      boxShadow: '0px 0px 13px -2px rgb(0 0 0 / 50%)',
+                      textAlign: 'center',
+                    }}
+                  >
+                    <p style={{ fontSize: '19px', fontWeight: 'bolder' }}>
+                      {e.name}
+                    </p>
+                    <img
+                      src={e.image}
+                      alt={e.name}
+                      style={{
+                        width: '80%',
+                        borderRadius: '15px',
+                        margin: 'auto',
+                        height: '200px',
+                      }}
+                    />
+                    <p
+                      className='mt-3 mx-5'
+                      style={{
+                        lineHeight: '30px',
+                        textAlign: 'justify',
+                        direction: 'rtl',
+                        lineBreak: 'anywhere',
+                        height: '150px',
+                      }}
+                    >
+                      {e.text}
+                    </p>
+                  </div>
+                )
+              })}
+          </div>
+        )}
       </div>
 
       <div className='my-5 py-5 px-1' style={{ backgroundColor: '#eff2f9' }}>
@@ -79,115 +213,24 @@ const Home = () => {
             borderRadius: '10px',
           }}
         >
-          <div className='row'>
-            <div className='col-lg-2 col-md-4 col-sm-4 col-12 text-center mt-2'>
-              <img alt='logo' src={logo} style={{ width: '70%' }} />
-              <p
-                className='mt-2'
-                style={{ direction: 'rtl', textAlign: 'justify' }}
-              >
-                کالج اورست یکی از بزرگترین مجموعه های آموزش ای تی است
-              </p>
-            </div>
-            <div className='col-lg-2 col-md-4 col-sm-4 col-12 text-center mt-2'>
-              <img alt='logo' src={logo} style={{ width: '70%' }} />
-              <p
-                className='mt-2'
-                style={{ direction: 'rtl', textAlign: 'justify' }}
-              >
-                کالج اورست یکی از بزرگترین مجموعه های آموزش ای تی است
-              </p>
-            </div>
-            <div className='col-lg-2 col-md-4 col-sm-4 col-12 text-center mt-2'>
-              <img alt='logo' src={logo} style={{ width: '70%' }} />
-              <p
-                className='mt-2'
-                style={{ direction: 'rtl', textAlign: 'justify' }}
-              >
-                کالج اورست یکی از بزرگترین مجموعه های آموزش ای تی است
-              </p>
-            </div>
-            <div className='col-lg-2 col-md-4 col-sm-4 col-12 text-center mt-2'>
-              <img alt='logo' src={logo} style={{ width: '70%' }} />
-              <p
-                className='mt-2'
-                style={{ direction: 'rtl', textAlign: 'justify' }}
-              >
-                کالج اورست یکی از بزرگترین مجموعه های آموزش ای تی است
-              </p>
-            </div>
-            <div className='col-lg-2 col-md-4 col-sm-4 col-12 text-center mt-2'>
-              <img alt='logo' src={logo} style={{ width: '70%' }} />
-              <p
-                className='mt-2'
-                style={{ direction: 'rtl', textAlign: 'justify' }}
-              >
-                کالج اورست یکی از بزرگترین مجموعه های آموزش ای تی است
-              </p>
-            </div>
-            <div className='col-lg-2 col-md-4 col-sm-4 col-12 text-center mt-2'>
-              <img alt='logo' src={logo} style={{ width: '70%' }} />
-              <p
-                className='mt-2'
-                style={{ direction: 'rtl', textAlign: 'justify' }}
-              >
-                کالج اورست یکی از بزرگترین مجموعه های آموزش ای تی است
-              </p>
-            </div>
-            <div className='col-lg-2 col-md-4 col-sm-4 col-12 text-center mt-2'>
-              <img alt='logo' src={logo} style={{ width: '70%' }} />
-              <p
-                className='mt-2'
-                style={{ direction: 'rtl', textAlign: 'justify' }}
-              >
-                کالج اورست یکی از بزرگترین مجموعه های آموزش ای تی است
-              </p>
-            </div>
-            <div className='col-lg-2 col-md-4 col-sm-4 col-12 text-center mt-2'>
-              <img alt='logo' src={logo} style={{ width: '70%' }} />
-              <p
-                className='mt-2'
-                style={{ direction: 'rtl', textAlign: 'justify' }}
-              >
-                کالج اورست یکی از بزرگترین مجموعه های آموزش ای تی است
-              </p>
-            </div>
-            <div className='col-lg-2 col-md-4 col-sm-4 col-12 text-center mt-2'>
-              <img alt='logo' src={logo} style={{ width: '70%' }} />
-              <p
-                className='mt-2'
-                style={{ direction: 'rtl', textAlign: 'justify' }}
-              >
-                کالج اورست یکی از بزرگترین مجموعه های آموزش ای تی است
-              </p>
-            </div>
-            <div className='col-lg-2 col-md-4 col-sm-4 col-12 text-center mt-2'>
-              <img alt='logo' src={logo} style={{ width: '70%' }} />
-              <p
-                className='mt-2'
-                style={{ direction: 'rtl', textAlign: 'justify' }}
-              >
-                کالج اورست یکی از بزرگترین مجموعه های آموزش ای تی است
-              </p>
-            </div>
-            <div className='col-lg-2 col-md-4 col-sm-4 col-12 text-center mt-2'>
-              <img alt='logo' src={logo} style={{ width: '70%' }} />
-              <p
-                className='mt-2'
-                style={{ direction: 'rtl', textAlign: 'justify' }}
-              >
-                کالج اورست یکی از بزرگترین مجموعه های آموزش ای تی است
-              </p>
-            </div>
-            <div className='col-lg-2 col-md-4 col-sm-4 col-12 text-center mt-2'>
-              <img alt='logo' src={logo} style={{ width: '70%' }} />
-              <p
-                className='mt-2'
-                style={{ direction: 'rtl', textAlign: 'justify' }}
-              >
-                کالج اورست یکی از بزرگترین مجموعه های آموزش ای تی است
-              </p>
-            </div>
+          <div className='row' style={{ justifyContent: 'right' }}>
+            {client &&
+              client.map((e) => {
+                return (
+                  <div
+                    key={e.id}
+                    className='col-lg-2 col-md-4 col-sm-4 col-12 text-center mt-2'
+                  >
+                    <img alt='logo' src={e.image} style={{ width: '70%' }} />
+                    <p
+                      className='mt-2'
+                      style={{ direction: 'rtl', textAlign: 'justify' }}
+                    >
+                      {e.text}
+                    </p>
+                  </div>
+                )
+              })}
           </div>
         </div>
         <div style={{ textAlign: 'center' }}>
@@ -210,7 +253,35 @@ const Home = () => {
         >
           مجوز های ما
         </h4>
-        <MojavezSlider />
+        {mojavez.length > 3 ? (
+          <MojavezSlider mojavez={mojavez} />
+        ) : (
+          <div className='row'>
+            {mojavez &&
+              mojavez.map((e) => {
+                return (
+                  <div
+                    className='col-lg-3 col-md-4 col-sm-6  col-12 my-5'
+                    style={{
+                      textAlign: 'center',
+                      fontSize: '15px',
+                      fontWeight: 'bolder',
+                      justifyContent: 'center',
+                      margin: 'auto',
+                    }}
+                  >
+                    <p>{e.name}</p>
+                    <img
+                      src={e.image}
+                      alt='certificate'
+                      style={{ width: '70%', margin: 'auto' }}
+                    />
+                  </div>
+                )
+              })}
+          </div>
+        )}
+
         <div style={{ textAlign: 'center' }}>
           <button
             style={{

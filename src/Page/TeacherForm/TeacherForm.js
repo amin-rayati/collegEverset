@@ -1,4 +1,4 @@
-import { React, useState } from 'react'
+import { React, useState, useEffect } from 'react'
 import Dropzone from 'react-dropzone'
 import Radio from '@mui/material/Radio'
 import RadioGroup from '@mui/material/RadioGroup'
@@ -14,6 +14,56 @@ const AskDore = () => {
       setShowState(true)
     } else {
       setShowState(false)
+    }
+  }
+
+  const [state, setState] = useState('')
+  const [city, setCity] = useState('')
+
+  const getState = async () => {
+    try {
+      const rawResponse = await fetch(
+        'https://portal-sazmani.com/admin/States/API/_all?token=test',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            token: 'test',
+          },
+        }
+      )
+      const content = await rawResponse.json()
+      if (content.isDone) {
+        setState(content.data)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const handleStateChange = (e) => {
+    getCityByState(document.getElementById('state').value)
+  }
+  const getCityByState = async (id) => {
+    try {
+      const rawResponse = await fetch(
+        'https://portal-sazmani.com/admin/Cities/API/_allByState?token=test',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            token: 'test',
+          },
+          body: JSON.stringify({
+            stateId: id,
+          }),
+        }
+      )
+      const content = await rawResponse.json()
+      if (content.isDone) {
+        setCity(content.data)
+      }
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -51,24 +101,6 @@ const AskDore = () => {
     setRegin(e.target.value)
     if (e.target.value.length > 4) {
       setReginReq(false)
-    }
-  }
-
-  const [state, setState] = useState('')
-  const [stateReq, setStateReq] = useState(false)
-  const handleStateChange = (e) => {
-    setState(e.target.value)
-    if (e.target.value.length > 10) {
-      setStateReq(true)
-    }
-  }
-
-  const [city, setCity] = useState('')
-  const [cityReq, setCityReq] = useState(false)
-  const handleCityChange = (e) => {
-    setCity(e.target.value)
-    if (e.target.value.length > 10) {
-      setCityReq(true)
     }
   }
 
@@ -198,14 +230,7 @@ const AskDore = () => {
       setReginReq(true)
       return
     }
-    if (state.length < 5) {
-      setStateReq(true)
-      return
-    }
-    if (city.length < 5) {
-      setCityReq(true)
-      return
-    }
+
     if (phone.length < 10) {
       setPhoneReq(true)
       return
@@ -235,6 +260,10 @@ const AskDore = () => {
       return
     }
   }
+
+  useEffect(() => {
+    getState()
+  }, [])
 
   return (
     <div>
@@ -483,8 +512,7 @@ const AskDore = () => {
                     شهر :
                   </label>
                   <select
-                    onChange={handleCityChange}
-                    value={city}
+                    id='city'
                     required
                     className='col-lg-8 col-md-12 col-sm-12 col-12 mt-3 mx-1'
                     type='text'
@@ -500,15 +528,17 @@ const AskDore = () => {
                       boxShadow: 'rgb(0 0 0 / 50%) 0px 0px 12px -5px inset',
                     }}
                   >
-                    <option key='1' value='عالی'>
-                      کرج
+                    <option key='0' value='0' disabled selected>
+                      شهر خود را انتخاب کنید
                     </option>
-                    <option key='2' value='متوسط'>
-                      تهران
-                    </option>
-                    <option key='3' value='ضعیف'>
-                      عظیمیه
-                    </option>
+                    {city &&
+                      city.map((e) => {
+                        return (
+                          <option key={e.id} value={e.id}>
+                            {e.name}
+                          </option>
+                        )
+                      })}
                   </select>
                 </div>
               </div>
@@ -525,7 +555,7 @@ const AskDore = () => {
                   </label>
                   <select
                     onChange={handleStateChange}
-                    value={state}
+                    id='state'
                     required
                     className='col-lg-8 col-md-12 col-sm-12 col-12 mt-3 mx-1'
                     type='text'
@@ -541,15 +571,17 @@ const AskDore = () => {
                       boxShadow: 'rgb(0 0 0 / 50%) 0px 0px 12px -5px inset',
                     }}
                   >
-                    <option key='1' value='عالی'>
-                      کرج
+                    <option key='0' value='0' disabled selected>
+                      استان خود را انتخاب کنید
                     </option>
-                    <option key='2' value='متوسط'>
-                      تهران
-                    </option>
-                    <option key='3' value='ضعیف'>
-                      عظیمیه
-                    </option>
+                    {state &&
+                      state.map((e) => {
+                        return (
+                          <option key={e.id} value={e.id}>
+                            {e.name}
+                          </option>
+                        )
+                      })}
                   </select>
                 </div>
               </div>

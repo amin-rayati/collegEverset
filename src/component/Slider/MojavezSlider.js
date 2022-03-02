@@ -3,14 +3,14 @@ import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import certificate from '../../assets/Img/certificate.jpg'
-export default function Carousel() {
+export default function Carousel({ mojavez }) {
   const slickDefaults = {
-    slidesToShow: 6,
+    slidesToShow: 5,
     slidesToScroll: 1,
     initialSlide: 0,
     dots: true,
     rtl: true,
-    infinite: true,
+    infinite: false,
 
     autoplay: false,
     autoplaySpeed: 2000,
@@ -115,132 +115,30 @@ export default function Carousel() {
       {...slickDefaults}
       style={{ marginTop: '40px', marginBottom: '40px' }}
     >
-      <div>
-        <div
-          style={{
-            textAlign: 'center',
-            fontSize: '15px',
-            fontWeight: 'bolder',
-            width: '90%',
-            justifyContent: 'center',
-          }}
-        >
-          <p>مجوز عمران</p>
-          <img
-            src={certificate}
-            alt='certificate'
-            style={{ width: '70%', margin: 'auto' }}
-          />
-        </div>
-      </div>
-      <div>
-        <div
-          style={{
-            textAlign: 'center',
-            fontSize: '15px',
-            fontWeight: 'bolder',
-            width: '90%',
-            justifyContent: 'center',
-          }}
-        >
-          <p>مجوز عمران</p>
-          <img
-            src={certificate}
-            alt='certificate'
-            style={{ width: '70%', margin: 'auto' }}
-          />
-        </div>
-      </div>
-      <div>
-        <div
-          style={{
-            textAlign: 'center',
-            fontSize: '15px',
-            fontWeight: 'bolder',
-            width: '90%',
-            justifyContent: 'center',
-          }}
-        >
-          <p>مجوز عمران</p>
-          <img
-            src={certificate}
-            alt='certificate'
-            style={{ width: '70%', margin: 'auto' }}
-          />
-        </div>
-      </div>
-      <div>
-        <div
-          style={{
-            textAlign: 'center',
-            fontSize: '15px',
-            fontWeight: 'bolder',
-            width: '90%',
-            justifyContent: 'center',
-          }}
-        >
-          <p>مجوز عمران</p>
-          <img
-            src={certificate}
-            alt='certificate'
-            style={{ width: '70%', margin: 'auto' }}
-          />
-        </div>
-      </div>
-      <div>
-        <div
-          style={{
-            textAlign: 'center',
-            fontSize: '15px',
-            fontWeight: 'bolder',
-            width: '90%',
-            justifyContent: 'center',
-          }}
-        >
-          <p>مجوز عمران</p>
-          <img
-            src={certificate}
-            alt='certificate'
-            style={{ width: '70%', margin: 'auto' }}
-          />
-        </div>
-      </div>
-      <div>
-        <div
-          style={{
-            textAlign: 'center',
-            fontSize: '15px',
-            fontWeight: 'bolder',
-            width: '90%',
-            justifyContent: 'center',
-          }}
-        >
-          <p>مجوز عمران</p>
-          <img
-            src={certificate}
-            alt='certificate'
-            style={{ width: '70%', margin: 'auto' }}
-          />
-        </div>
-      </div>
-      <div>
-        <div
-          style={{
-            textAlign: 'center',
-            fontSize: '15px',
-            fontWeight: 'bolder',
-            width: '90%',
-            justifyContent: 'center',
-          }}
-        >
-          <p>مجوز عمران</p>
-          <img
-            src={certificate}
-            alt='certificate'
-            style={{ width: '70%', margin: 'auto' }}
-          />
-        </div>
-      </div>
+      {mojavez &&
+        mojavez.map((e) => {
+          return (
+            <div>
+              <div
+                className='col-lg-3 col-md-4 col-sm-6  col-12'
+                style={{
+                  textAlign: 'center',
+                  fontSize: '15px',
+                  fontWeight: 'bolder',
+                  width: '90%',
+                  justifyContent: 'center',
+                }}
+              >
+                <p>{e.name}</p>
+                <img
+                  src={e.image}
+                  alt={e.name}
+                  style={{ width: '70%', margin: 'auto' }}
+                />
+              </div>
+            </div>
+          )
+        })}
     </Slider>
   )
 }

@@ -20,6 +20,7 @@ import Header from './component/Header/Header'
 import Footer from './component/Footer/Footer'
 import { useProjectContext } from './context/ProjectProvider'
 import { Cookies, useCookies } from 'react-cookie'
+import axios from 'axios'
 
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -28,6 +29,36 @@ import 'react-image-gallery/styles/css/image-gallery.css'
 function App() {
   const [cookies, setCookie, removeCookie] = useCookies(['user'])
 
+  const { userData, setUserData } = useProjectContext()
+
+  window.onload = function () {
+    if (cookies['user']) {
+      getIndividualInfo()
+    }
+  }
+
+  const getIndividualInfo = () => {
+    axios
+      .post(
+        'https://portal-sazmani.com/admin/Customers/API/_getCustomerInfo?token=test',
+        {
+          mobile: cookies['user']['mobile'],
+        },
+        {
+          headers: {
+            token: 'test',
+          },
+        }
+      )
+      .then((response) => {
+        if (response.data.isDone) {
+          setUserData(response.data.data)
+        }
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }
   return (
     <div>
       <Router>

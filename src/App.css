@@ -42,6 +42,7 @@
     color: white !important;
     direction: rtl !important;
     font-weight: bolder !important;
+    width: fit-content !important;
   }
 
   .dropdown-item {
@@ -140,4 +141,7 @@
   text-align: right;
   box-shadow: rgb(0 0 0 / 50%) 0px 0px 12px -5px inset;
   width: -webkit-fill-available;
+}
+.collasible-nav-dropdown {
+  color: #fff !important;
 }

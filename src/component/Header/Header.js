@@ -4,7 +4,7 @@ import { BiWorld } from 'react-icons/bi'
 import Login from '../LoginRegister/Login'
 import { useProjectContext } from '../../context/ProjectProvider'
 import { Cookies, useCookies } from 'react-cookie'
-
+import Swal from 'sweetalert2'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Link } from 'react-router-dom'
 const Header = () => {
@@ -70,6 +70,23 @@ const Header = () => {
       console.log(error)
     }
   }
+
+  const logOut = () => {
+    Swal.fire({
+      text: 'آیا میخواهید از سیات خارج شوید؟',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: 'red',
+      cancelButtonText: 'خیر',
+      confirmButtonText: 'بله',
+      preConfirm: () => {
+        removeCookie('user')
+        setUserData(null)
+      },
+    })
+  }
+
   useEffect(() => {
     getDepartmentList()
     getIndustryList()
@@ -84,20 +101,47 @@ const Header = () => {
         className='px-5 py-3  showNav1'
         style={{ justifyContent: 'space-between', backgroundColor: '#161f3c' }}
       >
-        <button
-          style={{
-            borderRadius: '10px',
-            padding: '10px 15px ',
-            backgroundColor: '#f1a314',
-            border: 'none',
-          }}
-          onClick={() => {
-            loginModalShow()
-          }}
-        >
-          ورود و ثبت نام
-        </button>
-        {loginModal ? <Login /> : null}{' '}
+        {!userData ? (
+          <>
+            <button
+              style={{
+                borderRadius: '10px',
+                padding: '10px 15px ',
+                backgroundColor: '#f1a314',
+                border: 'none',
+              }}
+              onClick={() => {
+                loginModalShow()
+              }}
+            >
+              ورود و ثبت نام
+            </button>
+            {loginModal ? <Login /> : null}{' '}
+          </>
+        ) : (
+          <NavDropdown
+            className={'active-nav-name mx-2 nav-font'}
+            title={userData['firstName'] + ' ' + userData['lastName']}
+            id='collasible-nav-dropdown '
+            style={{
+              right: '0px',
+              borderRadius: '20px',
+              backgroundColor: 'white',
+            }}
+          >
+            <LinkContainer to='/dashboard' style={{ textAlign: 'right' }}>
+              <NavDropdown.Item>داشبورد</NavDropdown.Item>
+            </LinkContainer>
+            <NavDropdown.Divider />
+            <NavDropdown.Item
+              onClick={() => logOut()}
+              style={{ textAlign: 'right' }}
+            >
+              خروج
+            </NavDropdown.Item>
+          </NavDropdown>
+        )}
+
         <h4 style={{ color: 'white' }}>
           {' '}
           مرکز تخصصی آموزش سازمان ها و شرکت ها
@@ -245,14 +289,21 @@ const Header = () => {
           style={{ justifyContent: 'right' }}
         >
           <Nav className='px-5'>
-            <Nav.Link
+            <LinkContainer
               className='mx-3'
-              style={{ color: 'white', fontWeight: 'bolder', textAlign: 'end' }}
+              style={{
+                color: 'white',
+                fontWeight: 'bolder',
+                textAlign: 'end',
+                width: 'fit-content',
+              }}
+              to='/'
             >
-              خانه
-            </Nav.Link>
+              <Nav.Link>خانه</Nav.Link>
+            </LinkContainer>
 
             <NavDropdown
+              style={{ color: 'black' }}
               title='دوره'
               id='collasible-nav-dropdown'
               className='mx-3'
@@ -260,67 +311,41 @@ const Header = () => {
               <div className='d-flex px-3'>
                 <div>
                   <div className='d-flex' style={{ justifyContent: 'end' }}>
-                    <p style={{ color: 'white' }}>دپارتمان</p>
+                    <p style={{ color: 'black' }}>دپارتمان</p>
                   </div>
-                  <NavDropdown.Item
-                    href='#action/3.1'
-                    style={{ textAlign: 'right', color: '#000' }}
-                  >
-                    دپارتمان عمران
-                  </NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item
-                    href='#action/3.3'
-                    style={{ textAlign: 'right', color: '#000' }}
-                  >
-                    دپارتمان عمران
-                  </NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item
-                    href='#action/3.3'
-                    style={{ textAlign: 'right', color: '#000' }}
-                  >
-                    دپارتمان عمران
-                  </NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item
-                    href='#action/3.3'
-                    style={{ textAlign: 'right', color: '#000' }}
-                  >
-                    دپارتمان عمران
-                  </NavDropdown.Item>
+                  {department &&
+                    department.map((e) => {
+                      return (
+                        <>
+                          <LinkContainer
+                            style={{ textAlign: 'right', color: '#000' }}
+                            to={`/courses/2/${e.id}`}
+                          >
+                            <NavDropdown.Item>{e.name}</NavDropdown.Item>
+                          </LinkContainer>
+                          <NavDropdown.Divider />
+                        </>
+                      )
+                    })}
                 </div>
                 <div>
                   <div className='d-flex' style={{ justifyContent: 'end' }}>
-                    <p style={{ color: 'white' }}>صنایع</p>
+                    <p style={{ color: 'black' }}>صنایع</p>
                   </div>
-                  <NavDropdown.Item
-                    href='#action/3.1'
-                    style={{ textAlign: 'right', color: '#000' }}
-                  >
-                    دپارتمان عمران
-                  </NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item
-                    href='#action/3.3'
-                    style={{ textAlign: 'right', color: '#000' }}
-                  >
-                    دپارتمان عمران
-                  </NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item
-                    href='#action/3.3'
-                    style={{ textAlign: 'right', color: '#000' }}
-                  >
-                    دپارتمان عمران
-                  </NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item
-                    href='#action/3.3'
-                    style={{ textAlign: 'right', color: '#000' }}
-                  >
-                    دپارتمان عمران
-                  </NavDropdown.Item>
+                  {industry &&
+                    industry.map((e) => {
+                      return (
+                        <>
+                          <LinkContainer
+                            style={{ textAlign: 'right', color: '#000' }}
+                            to={`/courses/1/${e.id}`}
+                          >
+                            <NavDropdown.Item>{e.name}</NavDropdown.Item>
+                          </LinkContainer>
+                          <NavDropdown.Divider />
+                        </>
+                      )
+                    })}
                 </div>
               </div>
             </NavDropdown>
@@ -338,64 +363,111 @@ const Header = () => {
                 >
                   آموزش حضوری در محل شما
                 </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item
-                  href='#action/3.3'
-                  style={{ textAlign: 'right' }}
-                >
-                  آموزش آنلاین
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item
-                  href='#action/3.3'
-                  style={{ textAlign: 'right' }}
-                >
-                  گواهینامه پابان دوره
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item
-                  href='#action/3.3'
-                  style={{ textAlign: 'right' }}
-                >
-                  سفارش تولید محتوا آموزش
-                </NavDropdown.Item>
               </div>
             </NavDropdown>
 
-            <Nav.Link
+            <LinkContainer
               className='mx-3'
-              style={{ color: 'white', fontWeight: 'bolder', textAlign: 'end' }}
+              style={{
+                color: 'white',
+                fontWeight: 'bolder',
+                textAlign: 'end',
+                width: 'fit-content',
+              }}
+              to='/consult'
             >
-              درخواست مشاوره
-            </Nav.Link>
+              <Nav.Link> درخواست مشاوره</Nav.Link>
+            </LinkContainer>
 
-            <Nav.Link
+            <LinkContainer
               className='mx-3'
-              style={{ color: 'white', fontWeight: 'bolder', textAlign: 'end' }}
+              style={{
+                color: 'white',
+                fontWeight: 'bolder',
+                textAlign: 'end',
+                width: 'fit-content',
+              }}
+              to='/askcourse'
             >
-              درخواست دوره
-            </Nav.Link>
+              <Nav.Link> درخواست دوره</Nav.Link>
+            </LinkContainer>
 
-            <Nav.Link
+            <LinkContainer
               className='mx-3'
-              style={{ color: 'white', fontWeight: 'bolder', textAlign: 'end' }}
+              style={{
+                color: 'white',
+                fontWeight: 'bolder',
+                textAlign: 'end',
+                width: 'fit-content',
+              }}
+              to='/about'
             >
-              درباره ما
-            </Nav.Link>
+              <Nav.Link> درباره ما</Nav.Link>
+            </LinkContainer>
 
-            <Nav.Link
+            <LinkContainer
               className='mx-3'
-              style={{ color: 'white', fontWeight: 'bolder', textAlign: 'end' }}
+              style={{
+                color: 'white',
+                fontWeight: 'bolder',
+                textAlign: 'end',
+                width: 'fit-content',
+              }}
+              to='/teacherregister'
             >
-              ثبت نام مدرس
-            </Nav.Link>
+              <Nav.Link> ثبت نام مدرس</Nav.Link>
+            </LinkContainer>
 
-            <Nav.Link
+            <LinkContainer
               className='mx-3'
-              style={{ color: 'white', fontWeight: 'bolder', textAlign: 'end' }}
+              style={{
+                color: 'white',
+                fontWeight: 'bolder',
+                textAlign: 'end',
+                width: 'fit-content',
+              }}
+              to='/contact'
             >
-              تماس با ما
-            </Nav.Link>
+              <Nav.Link> تماس با ما</Nav.Link>
+            </LinkContainer>
+
+            {!userData ? (
+              <>
+                <div style={{ textAlign: 'left' }}>
+                  <button
+                    style={{
+                      borderRadius: '10px',
+                      padding: '10px 15px ',
+                      backgroundColor: '#f1a314',
+                      border: 'none',
+                    }}
+                    onClick={() => {
+                      loginModalShow()
+                    }}
+                  >
+                    ورود و ثبت نام
+                  </button>
+                </div>
+                {loginModal ? <Login /> : null}{' '}
+              </>
+            ) : (
+              <NavDropdown
+                className={'active-nav-name mx-2 nav-font'}
+                title={userData['firstName'] + ' ' + userData['lastName']}
+                id='collasible-nav-dropdown '
+              >
+                <LinkContainer to='/dashboard' style={{ textAlign: 'right' }}>
+                  <NavDropdown.Item>داشبورد</NavDropdown.Item>
+                </LinkContainer>
+                <NavDropdown.Divider />
+                <NavDropdown.Item
+                  onClick={() => logOut()}
+                  style={{ textAlign: 'right' }}
+                >
+                  خروج
+                </NavDropdown.Item>
+              </NavDropdown>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Navbar>

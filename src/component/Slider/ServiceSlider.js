@@ -12,7 +12,6 @@ export default function Carousel({ serivces }) {
     dots: true,
     rtl: true,
     infinite: true,
-
     autoplay: false,
     autoplaySpeed: 2000,
     responsive: [

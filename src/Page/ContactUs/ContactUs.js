@@ -6,6 +6,7 @@ import Swal from 'sweetalert2'
 import validator from 'validator'
 import Loader from '../../component/Loading/LoginLoading'
 import axios from 'axios'
+import swal from 'sweetalert'
 const ContactUs = () => {
   const [Loading, setLoading] = useState(false)
   const [name, setName] = useState('')
@@ -82,25 +83,38 @@ const ContactUs = () => {
     const formData = new FormData()
     formData.append('file', file)
     formData.append('name', name)
-    formData.append('phone', phone)
+    formData.append('mobile', phone)
     formData.append('email', email)
     formData.append('text', text)
-    try {
-      const response = axios({
-        method: 'post',
-        url: 'https://meyt.neganoon.ir/admin/Customers/API/_startLoginRegister?token=test',
-        data: formData,
-        headers: { 'Content-Type': 'multipart/form-data' },
+
+    setLoading(true)
+    axios
+      .post(
+        'https://portal-sazmani.com/admin/Tickets/API/_addTicket?token=test',
+        formData,
+        {
+          headers: { 'Content-Type': 'multipart/form-data', token: 'test' },
+        }
+      )
+
+      .then((response) => {
+        if (response.data.isDone) {
+          setLoading(false)
+          Swal.fire({
+            type: 'success',
+            text: 'پیام شما  با موفقیت ثبت شد',
+            confirmButtonText: 'فهمیدم',
+          })
+        }
       })
-    } catch (error) {
-      console.log(error)
-    }
+      .catch((error) => {
+        console.error(error)
+      })
   }
 
   return (
     <div>
       <div className='mt-5 mx-3' style={{ textAlign: 'right' }}>
-        <h1>تماس با ما</h1>
         <div
           style={{
             backgroundColor: '#161f3c',

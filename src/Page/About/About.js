@@ -4,7 +4,6 @@ const About = () => {
   return (
     <div>
       <div className='mt-5 mx-3' style={{ textAlign: 'right' }}>
-        <h1>تماس با ما</h1>
         <div
           style={{
             backgroundColor: '#161f3c',

@@ -15,6 +15,7 @@ import Certificate from './Page/Certificate/Certificate'
 import Service from './Page/Service/Service'
 import AskDore from './Page/Dore/AskDore'
 import TeacherForm from './Page/TeacherForm/TeacherForm'
+import AskConsult from './Page/Consult/AskConsult'
 import Header from './component/Header/Header'
 import Footer from './component/Footer/Footer'
 import { useProjectContext } from './context/ProjectProvider'
@@ -35,10 +36,7 @@ function App() {
           <Route exact path='/'>
             <Home />
           </Route>
-          <Route exact path='/doreha'>
-            <Dore />
-          </Route>
-          <Route exact path='/ask'>
+          <Route exact path='/askcourse'>
             <AskDore />
           </Route>
           <Route exact path='/contact'>
@@ -47,17 +45,28 @@ function App() {
           <Route exact path='/about'>
             <About />
           </Route>
-          <Route exact path='/Customers'>
-            <Customers />
-          </Route>
-          <Route exact path='/Certificate'>
-            <Certificate />
-          </Route>
-          <Route exact path='/Service'>
-            <Service />
-          </Route>
           <Route exact path='/teacherregister'>
             <TeacherForm />
+          </Route>
+          <Route exact path='/consult'>
+            <AskConsult />
+          </Route>
+
+          <Route exact path='/customers'>
+            <Customers />
+          </Route>
+          <Route exact path='/certificate'>
+            <Certificate />
+          </Route>
+          <Route exact path='/service'>
+            <Service />
+          </Route>
+
+          <Route exact path='/courses/:id'>
+            <Dore />
+          </Route>
+          <Route exact path='/courses/:id/:id'>
+            <Dore />
           </Route>
         </Switch>
         <Footer />

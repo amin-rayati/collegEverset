@@ -268,7 +268,6 @@ const AskDore = () => {
   return (
     <div>
       <div className='my-5 mx-3' style={{ textAlign: 'right' }}>
-        <h1>ثبت نام </h1>
         <div
           style={{
             backgroundColor: '#161f3c',

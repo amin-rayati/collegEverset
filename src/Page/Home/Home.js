@@ -6,13 +6,20 @@ import MojavezSlider from '../../component/Slider/MojavezSlider'
 import logo from '../../assets/Img/logo.jpg'
 import ax4 from '../../assets/Img/ax4.jpg'
 import footer from '../../assets/Img/footer.PNG'
-// import { BsFillTelephoneFill } from 'react-icons/bs'
+import ax1 from '../../assets/Img/ax1.jpg'
+import { LinkContainer } from 'react-router-bootstrap'
 import certificate from '../../assets/Img/certificate.jpg'
+import axios from 'axios'
+import Swal from 'sweetalert2'
+import Loader from '../../component/Loading/LoginLoading'
 
 const Home = () => {
+  const [Loading, setLoading] = useState(false)
+
   const [serivces, setServices] = useState('')
   const [mojavez, setMojavez] = useState('')
   const [client, setClient] = useState('')
+  const [courses, setCourses] = useState('')
   const getServices = async () => {
     try {
       const rawResponse = await fetch(
@@ -88,11 +95,80 @@ const Home = () => {
       console.log(error)
     }
   }
+  const getCourses = async () => {
+    try {
+      const rawResponse = await fetch(
+        'https://portal-sazmani.com/admin/Courses/API/_featuredCourses?token=test',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            token: 'test',
+          },
+        }
+      )
+      const content = await rawResponse.json()
+      if (content.isDone) {
+        setCourses(content.data)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const [phone, setPhone] = useState('')
+  const [phoneReq, setPhoneReq] = useState(false)
+  const validateMobilephone = (input) => {
+    let mobile = /^09{1}[\d]{9}$/
+    if (mobile.test(input)) {
+      setPhoneReq(false)
+      return true
+    } else {
+      return false
+    }
+  }
+
+  const handlePhoneChange = (e) => {
+    setPhone(e.target.value)
+  }
+  const submit = () => {
+    if (!validateMobilephone(phone)) {
+      setPhoneReq(true)
+      return
+    }
+
+    const formData = new FormData()
+    formData.append('mobile', phone)
+    setLoading(true)
+    axios
+      .post(
+        'https://portal-sazmani.com/admin/ConsultingRequests/API/_addRequest?token=test',
+        formData,
+        {
+          headers: { 'Content-Type': 'multipart/form-data', token: 'test' },
+        }
+      )
+
+      .then((response) => {
+        if (response.data.isDone) {
+          setLoading(false)
+          Swal.fire({
+            type: 'success',
+            text: 'درخواست شما  با موفقیت ثبت شد',
+            confirmButtonText: 'فهمیدم',
+          })
+        }
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }
 
   useEffect(() => {
     getServices()
     getMojavez()
     getClient()
+    getCourses()
   }, [])
 
   return (
@@ -141,7 +217,69 @@ const Home = () => {
         >
           دوره های پیشنهادی
         </h4>
-        <DoreSlider />
+
+        {courses.length > 3 ? (
+          <DoreSlider courses={courses} />
+        ) : (
+          <>
+            <div className='row'>
+              {courses &&
+                courses.map((e) => {
+                  return (
+                    <div
+                      key={e.id}
+                      className='col-xl-3 col-lg-8 col-md-8 col-sm-10  col-10 my-5 mx-auto'
+                    >
+                      <img
+                        src={e.image}
+                        alt={e.id}
+                        style={{
+                          width: '100%',
+                          borderRadius: '20px 20px 0px 0px',
+                          height: '250px',
+                        }}
+                      />
+                      <div
+                        style={{
+                          backgroundColor: '#fff',
+                          textAlign: 'end',
+                          padding: '10px',
+                          borderRadius: '0px 0px 20px 20px',
+                        }}
+                      >
+                        <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>
+                          {e.name}
+                        </p>
+                        <p
+                          style={{
+                            lineHeight: '30px',
+                            textAlign: 'justify',
+                            direction: 'rtl',
+                          }}
+                        >
+                          {e.text}
+                        </p>
+                      </div>
+                    </div>
+                  )
+                })}
+            </div>
+          </>
+        )}
+
+        <div style={{ textAlign: 'center' }}>
+          <LinkContainer
+            to='/courses/1'
+            style={{
+              borderRadius: '10px',
+              padding: '10px 15px ',
+              backgroundColor: '#f1a314',
+              border: 'none',
+            }}
+          >
+            <button>مشاهده بیشتر</button>
+          </LinkContainer>
+        </div>
       </div>
 
       <div className='my-5 py-5  px-1'>
@@ -197,6 +335,19 @@ const Home = () => {
               })}
           </div>
         )}
+        <div style={{ textAlign: 'center' }}>
+          <LinkContainer
+            to='/service'
+            style={{
+              borderRadius: '10px',
+              padding: '10px 15px ',
+              backgroundColor: '#f1a314',
+              border: 'none',
+            }}
+          >
+            <button>مشاهده بیشتر</button>
+          </LinkContainer>
+        </div>
       </div>
 
       <div className='my-5 py-5 px-1' style={{ backgroundColor: '#eff2f9' }}>
@@ -224,7 +375,11 @@ const Home = () => {
                     <img alt='logo' src={e.image} style={{ width: '70%' }} />
                     <p
                       className='mt-2'
-                      style={{ direction: 'rtl', textAlign: 'justify' }}
+                      style={{
+                        direction: 'rtl',
+                        textAlign: 'justify',
+                        lineBreak: 'anywhere',
+                      }}
                     >
                       {e.text}
                     </p>
@@ -234,16 +389,17 @@ const Home = () => {
           </div>
         </div>
         <div style={{ textAlign: 'center' }}>
-          <button
+          <LinkContainer
             style={{
               borderRadius: '10px',
               padding: '10px 15px ',
               backgroundColor: '#f1a314',
               border: 'none',
             }}
+            to='/customers'
           >
-            مشاهده بیشتر
-          </button>
+            <button>مشاهده بیشتر</button>
+          </LinkContainer>
         </div>
       </div>
 
@@ -283,16 +439,17 @@ const Home = () => {
         )}
 
         <div style={{ textAlign: 'center' }}>
-          <button
+          <LinkContainer
             style={{
               borderRadius: '10px',
               padding: '10px 15px ',
               backgroundColor: '#f1a314',
               border: 'none',
             }}
+            to='/certificate'
           >
-            مشاهده بیشتر
-          </button>
+            <button>مشاهده بیشتر</button>
+          </LinkContainer>
         </div>
       </div>
 
@@ -318,22 +475,49 @@ const Home = () => {
               </p>
               <div className='text-center'>
                 <input
+                  onChange={handlePhoneChange}
+                  value={phone}
                   type='text'
                   placeholder='09** *** ** **'
-                  style={{
-                    border: 'none',
-                    borderRadius: '15px',
-                    boxShadow: '0px 0px 8px -2px rgb(0 0 0 / 50%)',
-                    width: '70%',
-                    height: '40px',
-                    outline: 'none',
-                    padding: '20px',
-                  }}
+                  style={
+                    !phoneReq
+                      ? {
+                          border: 'none',
+                          borderRadius: '15px',
+                          boxShadow: '0px 0px 8px -2px rgb(0 0 0 / 50%)',
+                          width: '70%',
+                          height: '40px',
+                          outline: 'none',
+                          padding: '20px',
+                        }
+                      : {
+                          border: '1px solid #dc3545',
+                          borderRadius: '15px',
+                          boxShadow: '0px 0px 8px -2px rgb(0 0 0 / 50%)',
+                          width: '70%',
+                          height: '40px',
+                          outline: 'none',
+                          padding: '20px',
+                        }
+                  }
                 />
               </div>
+              {phoneReq ? (
+                <h5
+                  className='mt-2'
+                  style={{
+                    color: '#dc3545',
+                    textAlign: 'right',
+                    fontSize: '10px',
+                  }}
+                >
+                  لطفا شماره موبایل خود را وارد کنید
+                </h5>
+              ) : null}
 
               <div className='mt-3' style={{ textAlign: 'center' }}>
                 <button
+                  onClick={submit}
                   style={{
                     borderRadius: '10px',
                     padding: '10px 40px ',
@@ -342,7 +526,7 @@ const Home = () => {
                     width: '70%',
                   }}
                 >
-                  ثبت درخواست
+                  {Loading ? <Loader /> : ' ثبت درخواست'}
                 </button>
               </div>
             </div>

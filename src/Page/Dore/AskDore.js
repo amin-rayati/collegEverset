@@ -1,4 +1,4 @@
-import { React, useState } from 'react'
+import { React, useState, useEffect } from 'react'
 import operator from '../../assets/Img/operator.jpg'
 import logo from '../../assets/Img/logo.jpg'
 import certificate from '../../assets/Img/certificate.jpg'
@@ -9,6 +9,39 @@ import validator from 'validator'
 import Loader from '../../component/Loading/LoginLoading'
 import axios from 'axios'
 const AskDore = () => {
+  const [courses, setCourses] = useState('')
+
+  const getCourses = async () => {
+    try {
+      const rawResponse = await fetch(
+        'https://portal-sazmani.com/admin/Courses/API/_all?token=test',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            token: 'test',
+          },
+          body: JSON.stringify({
+            limit: 0,
+            page: 0,
+            departmentId: 0,
+            industryId: 0,
+          }),
+        }
+      )
+      const content = await rawResponse.json()
+      if (content.isDone) {
+        setCourses(content.data.data)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    getCourses()
+  }, [])
+
   const [Loading, setLoading] = useState(false)
   const [name, setName] = useState('')
   const [nameReq, setNameReq] = useState(false)
@@ -25,22 +58,14 @@ const AskDore = () => {
     }
   }
 
-  const [email, setEmail] = useState('')
-  const [emailReq, setEmailReq] = useState(false)
-  const validateEmail = (email) => {
-    if (validator.isEmail(email)) {
-      setEmailReq(false)
-      return true
-    } else {
-      return false
-    }
-  }
+  const [company, setCompany] = useState('')
+  const [companyReq, setCompanyReq] = useState(false)
 
-  const [text, setText] = useState('')
-  const [textReq, setTextReq] = useState(false)
+  const [title, settitle] = useState('')
+  const [titleReq, setTitleReq] = useState(false)
 
-  const [dore, setDore] = useState('')
-  const [doreReq, setDoreReq] = useState(false)
+  const [course, setCourse] = useState('')
+  const [courseReq, setCourseReq] = useState(false)
 
   const handleNameChange = (e) => {
     setName(e.target.value)
@@ -51,23 +76,28 @@ const AskDore = () => {
   const handlePhoneChange = (e) => {
     setPhone(e.target.value)
   }
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value)
-  }
-  const handleTextChange = (e) => {
-    setText(e.target.value)
-    if (e.target.value.length > 4) {
-      setTextReq(false)
+  const handleCompanyChange = (e) => {
+    setCompany(e.target.value)
+    if (e.target.value.length > 2) {
+      setCompanyReq(false)
     }
   }
-  const handleDoreChange = (e) => {
-    setDore(e.target.value)
-    if (e.target.value.length > 4) {
-      setDoreReq(false)
+  const handleTitleChange = (e) => {
+    settitle(e.target.value)
+    if (e.target.value.length > 2) {
+      setTitleReq(false)
+    }
+  }
+  const handleCourseChange = (e) => {
+    setCourse(document.getElementById('courseID').value)
+    if (course !== '0') {
+      setCourseReq(false)
     }
   }
 
   const submit = () => {
+    let courseId = document.getElementById('courseID').value
+
     if (name.length < 3) {
       setNameReq(true)
       return
@@ -76,39 +106,52 @@ const AskDore = () => {
       setPhoneReq(true)
       return
     }
-    if (!validateEmail(email)) {
-      setEmailReq(true)
+    if (company.length < 3) {
+      setCompanyReq(true)
       return
     }
-    if (text.length < 5) {
-      setTextReq(true)
+    if (title.length < 3) {
+      setTitleReq(true)
       return
     }
-    if (dore.length < 5) {
-      setDoreReq(true)
+    if (courseId === '0') {
+      setCourseReq(true)
       return
     }
+
     const formData = new FormData()
     formData.append('name', name)
-    formData.append('phone', phone)
-    formData.append('email', email)
-    formData.append('text', text)
-    formData.append('dore', dore)
-    try {
-      const response = axios({
-        method: 'post',
-        url: 'https://meyt.neganoon.ir/admin/Customers/API/_startLoginRegister?token=test',
-        data: formData,
-        headers: { 'Content-Type': 'multipart/form-data' },
+    formData.append('mobile', phone)
+    formData.append('companyName', company)
+    formData.append('title', title)
+    formData.append('courseId', courseId)
+    setLoading(true)
+    axios
+      .post(
+        'https://portal-sazmani.com/admin/CourseRequests/API/_addCourseRequests?token=test',
+        formData,
+        {
+          headers: { 'Content-Type': 'multipart/form-data', token: 'test' },
+        }
+      )
+
+      .then((response) => {
+        if (response.data.isDone) {
+          setLoading(false)
+          Swal.fire({
+            type: 'success',
+            text: 'درخواست شما  با موفقیت ثبت شد',
+            confirmButtonText: 'فهمیدم',
+          })
+        }
       })
-    } catch (error) {
-      console.log(error)
-    }
+      .catch((error) => {
+        console.error(error)
+      })
   }
   return (
     <div>
       <div className='my-5 mx-3' style={{ textAlign: 'right' }}>
-        <h1>دوره ها</h1>
         <div
           style={{
             backgroundColor: '#161f3c',
@@ -156,27 +199,25 @@ const AskDore = () => {
                     className='mt-3'
                     style={{ direction: 'rtl' }}
                   >
-                    ایمیل :
+                    نام سازمان :
                   </label>
                   <input
-                    onChange={handleEmailChange}
-                    value={email}
+                    onChange={handleCompanyChange}
+                    value={company}
                     required
                     className='col-7 mt-3 mx-1'
-                    id='email'
                     type='text'
-                    placeHolder='everest@gmail.com'
+                    placeHolder=' نام سازمان'
                     style={
-                      !emailReq
+                      !companyReq
                         ? {
                             borderRadius: '20px',
                             border: '1px solid #0000004f',
                             height: '40px',
-
                             outline: 'none',
                             background: 'white',
                             padding: '10px',
-                            textAlign: 'left',
+                            textAlign: 'right',
                             boxShadow:
                               'rgb(0 0 0 / 50%) 0px 0px 12px -5px inset',
                           }
@@ -188,14 +229,14 @@ const AskDore = () => {
                             outline: 'none',
                             background: 'white',
                             padding: '10px',
-                            textAlign: 'left',
+                            textAlign: 'right',
                             boxShadow:
                               'rgb(0 0 0 / 50%) 0px 0px 12px -5px inset',
                           }
                     }
                   />
                 </div>
-                {emailReq ? (
+                {companyReq ? (
                   <h5
                     className='mt-2'
                     style={{
@@ -204,7 +245,7 @@ const AskDore = () => {
                       fontSize: '10px',
                     }}
                   >
-                    لطفا ایمیل خود را وارد کنید
+                    لطفا سازمان خود را وارد کنید
                   </h5>
                 ) : null}
               </div>
@@ -342,20 +383,19 @@ const AskDore = () => {
                     سمت شما :
                   </label>
                   <input
-                    onChange={handleTextChange}
-                    value={text}
+                    onChange={handleTitleChange}
+                    value={title}
                     required
                     className='col-7 mt-3 mx-1'
                     id='name'
                     type='text'
-                    placeHolder='نام سازمان'
+                    placeHolder='سمت شما'
                     style={
-                      !textReq
+                      !titleReq
                         ? {
                             borderRadius: '20px',
                             border: '1px solid #0000004f',
                             height: '40px',
-
                             outline: 'none',
                             background: 'white',
                             padding: '10px',
@@ -364,9 +404,8 @@ const AskDore = () => {
                           }
                         : {
                             borderRadius: '20px',
-                            border: '1px solid #0000004f',
+                            border: '1px solid #dc3545',
                             height: '40px',
-
                             outline: 'none',
                             background: 'white',
                             padding: '10px',
@@ -376,7 +415,7 @@ const AskDore = () => {
                     }
                   />
                 </div>
-                {textReq ? (
+                {titleReq ? (
                   <h5
                     className='mt-2'
                     style={{
@@ -385,7 +424,7 @@ const AskDore = () => {
                       fontSize: '10px',
                     }}
                   >
-                    لطفا متن خود را کامل وارد کنید
+                    لطفا سمت خود را کامل وارد کنید
                   </h5>
                 ) : null}
               </div>
@@ -401,21 +440,20 @@ const AskDore = () => {
                   >
                     نام دوره مورد نیاز :
                   </label>
-                  <input
-                    onChange={handleDoreChange}
-                    value={dore}
+
+                  <select
+                    onChange={handleCourseChange}
+                    id='courseID'
                     required
-                    className='col-7 mt-3 mx-1'
-                    id='name'
+                    className='col-lg-8 col-md-12 col-sm-12 col-12 mt-3 mx-1'
                     type='text'
-                    placeHolder='نام دوره'
+                    placeHolder=''
                     style={
-                      !doreReq
+                      !courseReq
                         ? {
                             borderRadius: '20px',
                             border: '1px solid #0000004f',
-                            height: '40px',
-
+                            height: '50px',
                             outline: 'none',
                             background: 'white',
                             padding: '10px',
@@ -425,8 +463,7 @@ const AskDore = () => {
                         : {
                             borderRadius: '20px',
                             border: '1px solid #dc3545',
-                            height: '40px',
-
+                            height: '50px',
                             outline: 'none',
                             background: 'white',
                             padding: '10px',
@@ -434,9 +471,21 @@ const AskDore = () => {
                               'rgb(0 0 0 / 50%) 0px 0px 12px -5px inset',
                           }
                     }
-                  />
+                  >
+                    <option key='0' value='0' disabled selected>
+                      دوره خود را انتخاب کنید
+                    </option>
+                    {courses &&
+                      courses.map((e) => {
+                        return (
+                          <option key={e.id} value={e.id}>
+                            {e.name}
+                          </option>
+                        )
+                      })}
+                  </select>
                 </div>
-                {doreReq ? (
+                {courseReq ? (
                   <h5
                     className='mt-2'
                     style={{

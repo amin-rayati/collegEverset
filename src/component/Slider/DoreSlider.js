@@ -6,7 +6,7 @@ import ax1 from '../../assets/Img/ax1.jpg'
 import ax2 from '../../assets/Img/ax2.jpg'
 import ax3 from '../../assets/Img/ax3.jpg'
 import ax4 from '../../assets/Img/ax4.jpg'
-export default function Carousel() {
+export default function Carousel({ courses }) {
   const slickDefaults = {
     slidesToShow: 4,
     slidesToScroll: 1,
@@ -14,7 +14,6 @@ export default function Carousel() {
     dots: true,
     rtl: true,
     infinite: true,
-
     autoplay: false,
     autoplaySpeed: 2000,
     responsive: [
@@ -118,282 +117,45 @@ export default function Carousel() {
       {...slickDefaults}
       style={{ marginTop: '40px', marginBottom: '40px' }}
     >
-      <div>
-        <div style={{ width: '90%', margin: 'auto' }}>
-          <img
-            src={ax1}
-            alt='ax1'
-            style={{
-              width: '100%',
-              borderRadius: '20px 20px 0px 0px',
-              height: '250px',
-            }}
-          />
-          <div
-            style={{
-              backgroundColor: '#fff',
-              textAlign: 'end',
-              padding: '10px',
-              borderRadius: '0px 0px 20px 20px',
-            }}
-          >
-            <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>دوره ها IT</p>
-            <p
-              style={{
-                lineHeight: '30px',
-                textAlign: 'justify',
-                direction: 'rtl',
-              }}
-            >
-              در دوره های ای تی کالج اورست شما بهترین آموزش هارا میبینید و به
-              بهترین توانایی در برنامه نویسی میرسید مه میتوانید پروژه های خیلی
-              حرفه ای را انجام دهید
-            </p>
-            <div style={{ textAlign: 'left' }}>
-              <button
-                style={{
-                  borderRadius: '10px',
-                  padding: '10px 15px ',
-                  backgroundColor: '#f1a314',
-                  border: 'none',
-                }}
-              >
-                بیشتر
-              </button>
+      {courses &&
+        courses.map((e) => {
+          return (
+            <div>
+              <div key={e.id} style={{ width: '90%', margin: 'auto' }}>
+                <img
+                  src={e.image}
+                  alt={e.id}
+                  style={{
+                    width: '100%',
+                    borderRadius: '20px 20px 0px 0px',
+                    height: '250px',
+                  }}
+                />
+                <div
+                  style={{
+                    backgroundColor: '#fff',
+                    textAlign: 'end',
+                    padding: '10px',
+                    borderRadius: '0px 0px 20px 20px',
+                  }}
+                >
+                  <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>
+                    {e.name}
+                  </p>
+                  <p
+                    style={{
+                      lineHeight: '30px',
+                      textAlign: 'justify',
+                      direction: 'rtl',
+                    }}
+                  >
+                    {e.text}
+                  </p>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div style={{ width: '90%', margin: 'auto' }}>
-          <img
-            src={ax2}
-            alt='ax2'
-            style={{
-              width: '100%',
-              borderRadius: '20px 20px 0px 0px',
-              height: '250px',
-            }}
-          />
-          <div
-            style={{
-              backgroundColor: '#fff',
-              textAlign: 'end',
-              padding: '10px',
-              borderRadius: '0px 0px 20px 20px',
-            }}
-          >
-            <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>دوره ها IT</p>
-            <p
-              style={{
-                lineHeight: '30px',
-                textAlign: 'justify',
-                direction: 'rtl',
-              }}
-            >
-              در دوره های ای تی کالج اورست شما بهترین آموزش هارا میبینید و به
-              بهترین توانایی در برنامه نویسی میرسید مه میتوانید پروژه های خیلی
-              حرفه ای را انجام دهید
-            </p>
-            <div style={{ textAlign: 'left' }}>
-              <button
-                style={{
-                  borderRadius: '10px',
-                  padding: '10px 15px ',
-                  backgroundColor: '#f1a314',
-                  border: 'none',
-                }}
-              >
-                بیشتر
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div style={{ width: '90%', margin: 'auto' }}>
-          <img
-            src={ax3}
-            alt='ax3'
-            style={{
-              width: '100%',
-              borderRadius: '20px 20px 0px 0px',
-              height: '250px',
-            }}
-          />
-          <div
-            style={{
-              backgroundColor: '#fff',
-              textAlign: 'end',
-              padding: '10px',
-              borderRadius: '0px 0px 20px 20px',
-            }}
-          >
-            <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>دوره ها IT</p>
-            <p
-              style={{
-                lineHeight: '30px',
-                textAlign: 'justify',
-                direction: 'rtl',
-              }}
-            >
-              در دوره های ای تی کالج اورست شما بهترین آموزش هارا میبینید و به
-              بهترین توانایی در برنامه نویسی میرسید مه میتوانید پروژه های خیلی
-              حرفه ای را انجام دهید
-            </p>
-            <div style={{ textAlign: 'left' }}>
-              <button
-                style={{
-                  borderRadius: '10px',
-                  padding: '10px 15px ',
-                  backgroundColor: '#f1a314',
-                  border: 'none',
-                }}
-              >
-                بیشتر
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div style={{ width: '90%', margin: 'auto' }}>
-          <img
-            src={ax4}
-            alt='ax4'
-            style={{
-              width: '100%',
-              borderRadius: '20px 20px 0px 0px',
-              height: '250px',
-            }}
-          />
-          <div
-            style={{
-              backgroundColor: '#fff',
-              textAlign: 'end',
-              padding: '10px',
-              borderRadius: '0px 0px 20px 20px',
-            }}
-          >
-            <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>دوره ها IT</p>
-            <p
-              style={{
-                lineHeight: '30px',
-                textAlign: 'justify',
-                direction: 'rtl',
-              }}
-            >
-              در دوره های ای تی کالج اورست شما بهترین آموزش هارا میبینید و به
-              بهترین توانایی در برنامه نویسی میرسید مه میتوانید پروژه های خیلی
-              حرفه ای را انجام دهید
-            </p>
-            <div style={{ textAlign: 'left' }}>
-              <button
-                style={{
-                  borderRadius: '10px',
-                  padding: '10px 15px ',
-                  backgroundColor: '#f1a314',
-                  border: 'none',
-                }}
-              >
-                بیشتر
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div style={{ width: '90%', margin: 'auto' }}>
-          <img
-            src={ax1}
-            alt='ax1'
-            style={{
-              width: '100%',
-              borderRadius: '20px 20px 0px 0px',
-              height: '250px',
-            }}
-          />
-          <div
-            style={{
-              backgroundColor: '#fff',
-              textAlign: 'end',
-              padding: '10px',
-              borderRadius: '0px 0px 20px 20px',
-            }}
-          >
-            <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>دوره ها IT</p>
-            <p
-              style={{
-                lineHeight: '30px',
-                textAlign: 'justify',
-                direction: 'rtl',
-              }}
-            >
-              در دوره های ای تی کالج اورست شما بهترین آموزش هارا میبینید و به
-              بهترین توانایی در برنامه نویسی میرسید مه میتوانید پروژه های خیلی
-              حرفه ای را انجام دهید
-            </p>
-            <div style={{ textAlign: 'left' }}>
-              <button
-                style={{
-                  borderRadius: '10px',
-                  padding: '10px 15px ',
-                  backgroundColor: '#f1a314',
-                  border: 'none',
-                }}
-              >
-                بیشتر
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div style={{ width: '90%', margin: 'auto' }}>
-          <img
-            src={ax1}
-            alt='ax1'
-            style={{
-              width: '100%',
-              borderRadius: '20px 20px 0px 0px',
-              height: '250px',
-            }}
-          />
-          <div
-            style={{
-              backgroundColor: '#fff',
-              textAlign: 'end',
-              padding: '10px',
-              borderRadius: '0px 0px 20px 20px',
-            }}
-          >
-            <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>دوره ها IT</p>
-            <p
-              style={{
-                lineHeight: '30px',
-                textAlign: 'justify',
-                direction: 'rtl',
-              }}
-            >
-              در دوره های ای تی کالج اورست شما بهترین آموزش هارا میبینید و به
-              بهترین توانایی در برنامه نویسی میرسید مه میتوانید پروژه های خیلی
-              حرفه ای را انجام دهید
-            </p>
-            <div style={{ textAlign: 'left' }}>
-              <button
-                style={{
-                  borderRadius: '10px',
-                  padding: '10px 15px ',
-                  backgroundColor: '#f1a314',
-                  border: 'none',
-                }}
-              >
-                بیشتر
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+          )
+        })}
     </Slider>
   )
 }

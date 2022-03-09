@@ -25,7 +25,16 @@ import axios from 'axios'
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'react-image-gallery/styles/css/image-gallery.css'
+function _ScrollToTop(props) {
+  const { pathname } = useLocation()
 
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
+
+  return props.children
+}
+export const ScrollToTop = withRouter(_ScrollToTop)
 function App() {
   const [cookies, setCookie, removeCookie] = useCookies(['user'])
 
@@ -62,45 +71,47 @@ function App() {
   return (
     <div>
       <Router>
-        <Header />
-        <Switch>
-          <Route exact path='/'>
-            <Home />
-          </Route>
-          <Route exact path='/askcourse'>
-            <AskDore />
-          </Route>
-          <Route exact path='/contact'>
-            <ContactUs />
-          </Route>
-          <Route exact path='/about'>
-            <About />
-          </Route>
-          <Route exact path='/teacherregister'>
-            <TeacherForm />
-          </Route>
-          <Route exact path='/consult'>
-            <AskConsult />
-          </Route>
+        <ScrollToTop>
+          <Header />
+          <Switch>
+            <Route exact path='/'>
+              <Home />
+            </Route>
+            <Route exact path='/askcourse'>
+              <AskDore />
+            </Route>
+            <Route exact path='/contact'>
+              <ContactUs />
+            </Route>
+            <Route exact path='/about'>
+              <About />
+            </Route>
+            <Route exact path='/teacherregister'>
+              <TeacherForm />
+            </Route>
+            <Route exact path='/consult'>
+              <AskConsult />
+            </Route>
 
-          <Route exact path='/customers'>
-            <Customers />
-          </Route>
-          <Route exact path='/certificate'>
-            <Certificate />
-          </Route>
-          <Route exact path='/service'>
-            <Service />
-          </Route>
+            <Route exact path='/customers'>
+              <Customers />
+            </Route>
+            <Route exact path='/certificate'>
+              <Certificate />
+            </Route>
+            <Route exact path='/service'>
+              <Service />
+            </Route>
 
-          <Route exact path='/courses/:id'>
-            <Dore />
-          </Route>
-          <Route exact path='/courses/:id/:id'>
-            <Dore />
-          </Route>
-        </Switch>
-        <Footer />
+            <Route exact path='/courses/:id'>
+              <Dore />
+            </Route>
+            <Route exact path='/courses/:id/:id'>
+              <Dore />
+            </Route>
+          </Switch>
+          <Footer />{' '}
+        </ScrollToTop>
       </Router>
     </div>
   )

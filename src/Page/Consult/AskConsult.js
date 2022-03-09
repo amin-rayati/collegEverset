@@ -111,13 +111,13 @@ const AskConsult = () => {
               style={{ width: '100%', justifyContent: 'end' }}
             >
               <div
-                className='col-lg-6 col-md-12 col-sm-12 col-12 my-2'
+                className='col-lg-6 order-lg-1 col-md-12 order-md-2 col-sm-12 order-sm-2 col-12 order-2 my-2'
                 style={{ direction: 'rtl' }}
               >
-                <div style={{ textAlign: 'right' }}>
+                <div className='row' style={{ textAlign: 'right' }}>
                   <label
                     for='phone'
-                    className='mt-3'
+                    className='mt-4 col-lg-4 col-md-12 col-sm-12 col-12'
                     style={{ direction: 'rtl' }}
                   >
                     شماره تماس :
@@ -126,7 +126,7 @@ const AskConsult = () => {
                     onChange={handlePhoneChange}
                     value={phone}
                     required
-                    className='col-7 mt-3 mx-1'
+                    className='col-lg-7 col-md-12 col-sm-12 col-12  mt-3 '
                     id='phone'
                     type='text'
                     placeHolder='09362625488'
@@ -171,13 +171,13 @@ const AskConsult = () => {
                 ) : null}
               </div>
               <div
-                className='col-lg-6 col-md-12 col-sm-12 col-12 my-2'
+                className='col-lg-6 order-lg-2  col-md-12 order-md-1 col-sm-12 order-sm-1 col-12 order-1 my-2'
                 style={{ direction: 'rtl' }}
               >
-                <div style={{ textAlign: 'right' }}>
+                <div className='row' style={{ textAlign: 'right' }}>
                   <label
                     for='name '
-                    className='mt-3'
+                    className='mt-4 col-lg-4 col-md-12 col-sm-12 col-12'
                     style={{ direction: 'ltr' }}
                   >
                     {' '}
@@ -187,7 +187,7 @@ const AskConsult = () => {
                     onChange={handleNameChange}
                     value={name}
                     required
-                    className='col-7 mt-3 mx-1'
+                    className='col-lg-7 col-md-12 col-sm-12 col-12  mt-3 '
                     id='name'
                     type='text'
                     placeHolder='نام و نام خانوادگی'

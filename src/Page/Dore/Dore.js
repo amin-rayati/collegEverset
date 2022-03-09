@@ -300,7 +300,7 @@ const Dore = () => {
                             cursor: 'pointer',
                             background: 'none',
                             borderRadius: '15px',
-                            padding: '10px 30px',
+                            padding: '0px',
                           }
                         : {
                             fontWeight: 'bolder',
@@ -309,7 +309,7 @@ const Dore = () => {
                             cursor: 'pointer',
                             backgroundColor: 'none',
                             background: '#f1a314',
-                            padding: '10px 30px',
+                            padding: '5px 30px',
                             borderRadius: '15px',
                             color: 'white',
                           }

@@ -122,7 +122,7 @@ const Header = () => {
           <NavDropdown
             className={'active-nav-name mx-2 nav-font'}
             title={userData['firstName'] + ' ' + userData['lastName']}
-            id='collasible-nav-dropdown '
+            id='collasible-nav-dropdown'
             style={{
               right: '0px',
               borderRadius: '20px',
@@ -202,7 +202,7 @@ const Header = () => {
               <Nav.Link>درخواست مشاوره</Nav.Link>
             </LinkContainer>
 
-            <NavDropdown
+            {/* <NavDropdown
               style={{ color: 'black' }}
               title='خدمات ما'
               id='collasible-nav-dropdown'
@@ -215,7 +215,14 @@ const Header = () => {
 
                 <NavDropdown.Divider />
               </div>
-            </NavDropdown>
+            </NavDropdown> */}
+            <LinkContainer
+              to='/service'
+              className='mx-3'
+              style={{ color: 'black', fontWeight: 'bolder' }}
+            >
+              <Nav.Link>خدمات ما</Nav.Link>
+            </LinkContainer>
 
             <NavDropdown
               style={{ color: 'black' }}
@@ -279,9 +286,16 @@ const Header = () => {
       <Navbar
         collapseOnSelect
         expand='lg'
-        style={{ backgroundColor: '#161f3c' }}
+        style={{
+          backgroundColor: '#161f3c',
+          position: 'sticky',
+          width: '-webkit-fill-available',
+          top: '0px',
+          zIndex: '999',
+          direction: 'rtl',
+        }}
         variant='dark'
-        className='showNav2 p-3'
+        className='showNav2 p-3 mb-5'
       >
         <Navbar.Toggle aria-controls='responsive-navbar-nav' />
         <Navbar.Collapse
@@ -308,41 +322,61 @@ const Header = () => {
               id='collasible-nav-dropdown'
               className='mx-3'
             >
-              <div className='d-flex px-3'>
+              <div className='flex-column px-3'>
                 <div>
-                  <div className='d-flex' style={{ justifyContent: 'end' }}>
-                    <p style={{ color: 'black' }}>دپارتمان</p>
+                  <div
+                    className='d-flex my-2'
+                    style={{ justifyContent: 'right' }}
+                  >
+                    <p style={{ color: 'black', fontWeight: 'bolder' }}>
+                      دپارتمان
+                    </p>
                   </div>
                   {department &&
                     department.map((e) => {
                       return (
                         <>
                           <LinkContainer
-                            style={{ textAlign: 'right', color: '#000' }}
+                            style={{
+                              textAlign: 'right',
+                              color: '#000',
+                              borderBottom: '1px solid #d5d5d5',
+                              width: '90%',
+                            }}
+                            className='dropDown-font'
                             to={`/courses/2/${e.id}`}
                           >
                             <NavDropdown.Item>{e.name}</NavDropdown.Item>
                           </LinkContainer>
-                          <NavDropdown.Divider />
                         </>
                       )
                     })}
                 </div>
                 <div>
-                  <div className='d-flex' style={{ justifyContent: 'end' }}>
-                    <p style={{ color: 'black' }}>صنایع</p>
+                  <div
+                    className='d-flex my-2'
+                    style={{ justifyContent: 'right' }}
+                  >
+                    <p style={{ color: 'black', fontWeight: 'bolder' }}>
+                      صنایع
+                    </p>
                   </div>
                   {industry &&
                     industry.map((e) => {
                       return (
                         <>
                           <LinkContainer
-                            style={{ textAlign: 'right', color: '#000' }}
+                            style={{
+                              textAlign: 'right',
+                              color: '#000',
+                              borderBottom: '1px solid #d5d5d5',
+                              width: '90%',
+                            }}
+                            className='dropDown-font'
                             to={`/courses/1/${e.id}`}
                           >
                             <NavDropdown.Item>{e.name}</NavDropdown.Item>
                           </LinkContainer>
-                          <NavDropdown.Divider />
                         </>
                       )
                     })}
@@ -350,7 +384,7 @@ const Header = () => {
               </div>
             </NavDropdown>
 
-            <NavDropdown
+            {/* <NavDropdown
               style={{ color: 'black' }}
               title='خدمات ما'
               id='collasible-nav-dropdown'
@@ -364,7 +398,20 @@ const Header = () => {
                   آموزش حضوری در محل شما
                 </NavDropdown.Item>
               </div>
-            </NavDropdown>
+            </NavDropdown> */}
+
+            <LinkContainer
+              className='mx-3'
+              style={{
+                color: 'white',
+                fontWeight: 'bolder',
+                textAlign: 'end',
+                width: 'fit-content',
+              }}
+              to='/service'
+            >
+              <Nav.Link>خدمات ما</Nav.Link>
+            </LinkContainer>
 
             <LinkContainer
               className='mx-3'
@@ -433,7 +480,7 @@ const Header = () => {
 
             {!userData ? (
               <>
-                <div style={{ textAlign: 'left' }}>
+                <div style={{ textAlign: 'right' }}>
                   <button
                     style={{
                       borderRadius: '10px',

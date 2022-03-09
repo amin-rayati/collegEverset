@@ -10,11 +10,11 @@ export default function Carousel() {
     autoplay: true,
     autoplaySpeed: 2000,
     dots: true,
-    infinite: false,
+    infinite: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    initialSlide: 1,
+    initialSlide: 0,
     responsive: [
       {
         breakpoint: 1024,
@@ -89,16 +89,9 @@ export default function Carousel() {
         banners.map((e) => {
           return (
             <div key={e.id}>
-              <div
-                style={{ height: '510px !important' }}
-                className=' mx-auto Adslider'
-              >
+              <div className=' mx-auto Adslider'>
                 <div className=''>
-                  <img
-                    src={e.image}
-                    alt={e.id}
-                    style={{ width: '100%', height: '500px' }}
-                  />
+                  <img src={e.image} alt={e.id} style={{ width: '100%' }} />
                 </div>
               </div>
             </div>

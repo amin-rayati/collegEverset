@@ -5,13 +5,12 @@ import 'slick-carousel/slick/slick-theme.css'
 import certificate from '../../assets/Img/certificate.jpg'
 export default function Carousel({ mojavez }) {
   const slickDefaults = {
-    slidesToShow: 5,
+    slidesToShow: 6,
     slidesToScroll: 1,
     initialSlide: 0,
     dots: true,
     rtl: true,
-    infinite: false,
-
+    infinite: true,
     autoplay: false,
     autoplaySpeed: 2000,
     responsive: [
@@ -127,6 +126,7 @@ export default function Carousel({ mojavez }) {
                   fontWeight: 'bolder',
                   width: '90%',
                   justifyContent: 'center',
+                  margin: 'auto',
                 }}
               >
                 <p>{e.name}</p>

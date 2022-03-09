@@ -70,6 +70,7 @@ const Login = () => {
   }
   const handleStateChange = (e) => {
     getCityByState(document.getElementById('state').value)
+    console.log(document.getElementById('amin').value)
   }
   const getCityByState = async (id) => {
     try {
@@ -643,7 +644,7 @@ const Login = () => {
 
   useEffect(() => {
     getState()
-  }, [])
+  }, [registerModal])
 
   return (
     <>
@@ -1118,15 +1119,19 @@ const Login = () => {
               </div>
 
               <div className='col-lg-6 col-md-5 col-sm-10 col-10'>
-                <label for='state' style={{ direction: 'rtl', width: '35%' }}>
+                <label
+                  htmlFor='email'
+                  style={{ direction: 'rtl', width: '35%' }}
+                >
                   استان :
                 </label>
 
                 <select
                   onChange={handleStateChange}
-                  id='state'
+                  id='amin'
                   required
-                  className='col-lg-8 col-md-12 col-sm-12 col-12 mt-3 mx-1'
+                  name='stateId'
+                  className='col-lg-8 col-md-12 col-sm-12 col-12 mt-3 mx-1 '
                   type='text'
                   placeHolder=''
                   style={{
@@ -1154,7 +1159,10 @@ const Login = () => {
               </div>
 
               <div className='col-lg-6 col-md-5 col-sm-10 col-10'>
-                <label for='city' style={{ direction: 'rtl', width: '35%' }}>
+                <label
+                  htmlFor='email'
+                  style={{ direction: 'rtl', width: '35%' }}
+                >
                   {' '}
                   شهر :
                 </label>

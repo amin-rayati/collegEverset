@@ -210,14 +210,14 @@ const ContactUs = () => {
             style={{ width: '100%', justifyContent: 'end' }}
           >
             <div
-              className='col-lg-4 col-md-12 col-sm-12 col-12'
+              className='col-lg-4 order-lg-1 col-md-12 order-md-3 col-sm-12 order-sm-3 col-12 order-3'
               style={{ direction: 'rtl' }}
             >
-              <div>
+              <div className='row'>
                 <label
                   for='email'
-                  className='mt-3'
-                  style={{ direction: 'rtl', width: '35%' }}
+                  className='mt-3 col-lg-8 col-md-11 col-sm-11 col-sm-11'
+                  style={{ direction: 'rtl' }}
                 >
                   ایمیل :
                 </label>
@@ -225,7 +225,7 @@ const ContactUs = () => {
                   onChange={handleEmailChange}
                   value={email}
                   required
-                  className='col-9 mt-3 mx-1'
+                  className='col-lg-8 col-md-11 col-sm-11 col-11 mt-3 '
                   id='email'
                   type='text'
                   placeHolder='everest@gmail.com'
@@ -235,7 +235,6 @@ const ContactUs = () => {
                           borderRadius: '0.45rem',
                           border: '1px solid #0000004f',
                           height: '40px',
-                          width: '65%',
                           outline: 'none',
                           background: 'white',
                           padding: '10px',
@@ -246,7 +245,6 @@ const ContactUs = () => {
                           borderRadius: '0.45rem',
                           border: '1px solid #dc3545',
                           height: '40px',
-                          width: '65%',
                           outline: 'none',
                           background: 'white',
                           padding: '10px',
@@ -270,14 +268,14 @@ const ContactUs = () => {
               ) : null}
             </div>
             <div
-              className='col-lg-4 col-md-12 col-sm-12 col-12'
+              className='col-lg-4 order-lg-2 col-md-12 order-md-2 col-sm-12 order-sm-2 col-12 order-2'
               style={{ direction: 'rtl' }}
             >
-              <div>
+              <div className='row'>
                 <label
                   for='phone'
-                  className='mt-3'
-                  style={{ direction: 'rtl', width: '35%' }}
+                  className='mt-3 col-lg-8 col-md-11 col-sm-11 col-sm-11'
+                  style={{ direction: 'rtl' }}
                 >
                   شماره تماس :
                 </label>
@@ -285,7 +283,7 @@ const ContactUs = () => {
                   onChange={handlePhoneChange}
                   value={phone}
                   required
-                  className='col-9 mt-3 mx-1'
+                  className='col-lg-8 col-md-11 col-sm-11 col-11 mt-3 '
                   id='phone'
                   type='text'
                   placeHolder='09362625488'
@@ -295,7 +293,7 @@ const ContactUs = () => {
                           borderRadius: '0.45rem',
                           border: '1px solid #0000004f',
                           height: '40px',
-                          width: '65%',
+
                           outline: 'none',
                           background: 'white',
                           padding: '10px',
@@ -306,7 +304,7 @@ const ContactUs = () => {
                           borderRadius: '0.45rem',
                           border: '1px solid #dc3545',
                           height: '40px',
-                          width: '65%',
+
                           outline: 'none',
                           background: 'white',
                           padding: '10px',
@@ -328,25 +326,24 @@ const ContactUs = () => {
                   لطفا شماره خود را وارد کنید
                 </h5>
               ) : null}
-            </div>{' '}
+            </div>
             <div
-              className='col-lg-4 col-md-12 col-sm-12 col-12'
+              className='col-lg-4 order-lg-3 col-md-12 order-md-1  col-sm-12 order-sm-1 col-12 order-1'
               style={{ direction: 'rtl' }}
             >
-              <div>
+              <div className='row'>
                 <label
                   for='name '
-                  className='mt-3'
-                  style={{ direction: 'ltr', width: '35%' }}
+                  className='col-lg-8 col-md-11 col-sm-11 col-11 mt-3 '
+                  style={{ direction: 'ltr' }}
                 >
-                  {' '}
                   : نام و نام خانوادگی
                 </label>
                 <input
                   onChange={handleNameChange}
                   value={name}
                   required
-                  className='col-9 mt-3 mx-1'
+                  className='col-lg-8 col-md-11 col-sm-11 col-11 mt-3 '
                   id='name'
                   type='text'
                   placeHolder='نام و نام خانوادگی'
@@ -356,7 +353,7 @@ const ContactUs = () => {
                           borderRadius: '0.45rem',
                           border: '1px solid #0000004f',
                           height: '40px',
-                          width: '65%',
+
                           outline: 'none',
                           background: 'white',
                           padding: '10px',
@@ -366,7 +363,7 @@ const ContactUs = () => {
                           borderRadius: '0.45rem',
                           border: '1px solid #dc3545',
                           height: '40px',
-                          width: '65%',
+
                           outline: 'none',
                           background: 'white',
                           padding: '10px',
@@ -388,6 +385,12 @@ const ContactUs = () => {
                 </h5>
               ) : null}
             </div>
+          </div>
+
+          <div
+            className='row '
+            style={{ width: '100%', justifyContent: 'end' }}
+          >
             <div
               className='col-lg-10 col-md-12 col-sm-12 col-12'
               style={{ direction: 'rtl' }}
@@ -398,7 +401,7 @@ const ContactUs = () => {
                   onChange={handleTextChange}
                   value={text}
                   required
-                  className='col-9 mt-3 mx-1'
+                  className='col--lg-9 col-md-11 col-sm-11 col-11 mt-2 mx-1'
                   id='name'
                   type='text'
                   placeHolder='پیام خود را بنویسید'
@@ -408,7 +411,7 @@ const ContactUs = () => {
                           borderRadius: '0.45rem',
                           border: '1px solid #0000004f',
                           height: '200px',
-                          width: '80%',
+
                           outline: 'none',
                           background: 'white',
                           padding: '10px',
@@ -418,7 +421,7 @@ const ContactUs = () => {
                           borderRadius: '0.45rem',
                           border: '1px solid #dc3545',
                           height: '200px',
-                          width: '80%',
+
                           outline: 'none',
                           background: 'white',
                           padding: '10px',
@@ -448,28 +451,33 @@ const ContactUs = () => {
               <input
                 onChange={handleFileChange}
                 required
-                className='col-9 mt-3 mx-1'
+                className='col-lg-9 col-md-11 col-sm-11 col-11 mt-2 mx-1'
                 id='file'
                 type='file'
                 placeHolder='پیام خود را بنویسید'
                 style={{
                   borderRadius: '0.45rem',
                   border: '1px solid #0000004f',
-                  width: '80%',
+
                   outline: 'none',
                   background: 'white',
                   padding: '10px',
                   boxShadow: 'rgb(0 0 0 / 50%) 0px 0px 12px -5px inset',
                 }}
               />
-              <div className='d-flex mt-3' style={{ justifyContent: 'end' }}>
-                <p className='mx-4'>PDF,WORD,EXCEL,PPT,ZIP,MP3,MP4,JPEG,JPG</p>
+              <div
+                className='felx-column mt-3'
+                style={{ justifyContent: 'end' }}
+              >
                 <p style={{ direction: 'rtl' }}>فایل های مجاز :</p>
+                <p className='mx-4' style={{ lineBreak: 'anywhere' }}>
+                  PDF,WORD,EXCEL,PPT,ZIP,MP3,MP4,JPEG,JPG
+                </p>
               </div>
             </div>
           </div>
         </div>
-        <div style={{ textAlign: 'center' }}>
+        <div className='my-5' style={{ textAlign: 'center' }}>
           <button
             onClick={submit}
             variant=' my-3 mr-3 '

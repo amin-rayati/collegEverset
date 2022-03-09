@@ -13,7 +13,7 @@
 }
 .dropdown-menu {
   padding: 10px;
-  left: -100px !important;
+  left: -19px !important;
   position: absolute !important;
   width: fit-content !important;
   background-color: #161f3c !important;
@@ -48,13 +48,17 @@
   .dropdown-item {
     color: #161f3c !important;
   }
+
   .dropdown-menu {
     padding: 10px;
     left: 0px !important;
     position: absolute !important;
     width: fit-content !important;
     background-color: #ffffff !important;
+    position: unset !important;
+    z-index: 1000;
   }
+
   .contactStyle {
     justify-content: end !important;
   }
@@ -78,6 +82,9 @@
   }
   .contactFont {
     font-size: 8px !important;
+  }
+  .dropDown-font {
+    font-size: 11px !important;
   }
 }
 .slick-prev {
@@ -134,6 +141,17 @@
 .form-input2 {
   border-radius: 10px;
   border: 1px solid #0000004f;
+  height: 50px;
+  outline: none;
+  background: white;
+  padding: 10px;
+  text-align: right;
+  box-shadow: rgb(0 0 0 / 50%) 0px 0px 12px -5px inset;
+  width: -webkit-fill-available;
+}
+.form-input1 {
+  border-radius: 10px;
+  border: 1px solid #dc3545;
   height: 50px;
   outline: none;
   background: white;

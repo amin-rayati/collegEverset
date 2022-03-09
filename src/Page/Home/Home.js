@@ -109,6 +109,7 @@ const Home = () => {
       )
       const content = await rawResponse.json()
       if (content.isDone) {
+        // console.log(content.data)
         setCourses(content.data)
       }
     } catch (error) {
@@ -171,6 +172,8 @@ const Home = () => {
     getCourses()
   }, [])
 
+  console.log(courses.length)
+
   return (
     <>
       <div>
@@ -223,46 +226,47 @@ const Home = () => {
         ) : (
           <>
             <div className='row'>
-              {courses &&
-                courses.map((e) => {
-                  return (
-                    <div
-                      key={e.id}
-                      className='col-xl-3 col-lg-8 col-md-8 col-sm-10  col-10 my-5 mx-auto'
-                    >
-                      <img
-                        src={e.image}
-                        alt={e.id}
-                        style={{
-                          width: '100%',
-                          borderRadius: '20px 20px 0px 0px',
-                          height: '250px',
-                        }}
-                      />
+              {courses > 0
+                ? courses.map((e) => {
+                    return (
                       <div
-                        style={{
-                          backgroundColor: '#fff',
-                          textAlign: 'end',
-                          padding: '10px',
-                          borderRadius: '0px 0px 20px 20px',
-                        }}
+                        key={e.id}
+                        className='col-xl-3 col-lg-8 col-md-8 col-sm-10  col-10 my-5 mx-auto'
                       >
-                        <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>
-                          {e.name}
-                        </p>
-                        <p
+                        <img
+                          src={e.image}
+                          alt={e.id}
                           style={{
-                            lineHeight: '30px',
-                            textAlign: 'justify',
-                            direction: 'rtl',
+                            width: '100%',
+                            borderRadius: '20px 20px 0px 0px',
+                            height: '250px',
+                          }}
+                        />
+                        <div
+                          style={{
+                            backgroundColor: '#fff',
+                            textAlign: 'end',
+                            padding: '10px',
+                            borderRadius: '0px 0px 20px 20px',
                           }}
                         >
-                          {e.text}
-                        </p>
+                          <p style={{ fontSize: '15px', fontWeight: 'bolder' }}>
+                            {e.name}
+                          </p>
+                          <p
+                            style={{
+                              lineHeight: '30px',
+                              textAlign: 'justify',
+                              direction: 'rtl',
+                            }}
+                          >
+                            {e.text}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  )
-                })}
+                    )
+                  })
+                : null}
             </div>
           </>
         )}
